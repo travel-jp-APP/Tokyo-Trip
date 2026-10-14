@@ -9,12 +9,9 @@
 <meta name="apple-mobile-web-app-title" content="Tokyo Trip"> 
 <meta name="theme-color" content="#d6d3d1">
 
-<!-- iOS Apple Touch Icon (適用所有 iOS 版本) -->
 <link rel="apple-touch-icon" href="Tokyo.jpg">
 <link rel="apple-touch-icon-precomposed" href="Tokyo.jpg">
 <link rel="icon" type="image/jpeg" href="Tokyo.jpg">
-
-<!-- Android PWA Manifest (適用所有 Android 系統) -->
 <link rel="manifest" href='data:application/manifest+json,{"name":"Tokyo Trip 2026","short_name":"TokyoTrip","start_url":".","display":"standalone","background_color":"#d6d3d1","theme_color":"#d6d3d1","icons":[{"src":"Tokyo.jpg","sizes":"192x192","type":"image/jpeg","purpose":"any maskable"},{"src":"Tokyo.jpg","sizes":"512x512","type":"image/jpeg","purpose":"any maskable"}]}'>
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -112,7 +109,6 @@
         <div class="absolute inset-0 bg-stone-300/85 backdrop-blur-[2px]"></div>
     </div>
 
-    <!-- PWA Lock / Installation Guide Overlay (Hidden by default, shown when PWA mode required and not in PWA) -->
     <div id="pwa-lock-overlay" class="absolute inset-0 z-[100] bg-stone-100 dark:bg-stone-900 flex flex-col overflow-y-auto no-scrollbar p-6 items-center text-center hidden">
         <div class="w-full max-w-sm my-auto space-y-5 py-6">
             <!-- Warning Pill -->
@@ -205,7 +201,6 @@
         </div>
     </div>
 
-    <!-- Header Navigation Area -->
     <div class="shrink-0 bg-white/80 backdrop-blur-md border-b border-stone-200/50 shadow-sm z-50">
         <div class="px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-2.5">
@@ -227,10 +222,8 @@
         </div>
     </div>
 
-    <!-- Main Content Area -->
     <div id="main-content" class="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 no-scrollbar overscroll-contain relative z-10"></div>
 
-    <!-- Bottom Navigation Bar -->
     <div class="shrink-0 bg-white/90 backdrop-blur-md border-t border-stone-200/50 pb-safe z-50 overflow-x-auto no-scrollbar">
         <div class="flex justify-between items-center h-16 min-w-max px-2" id="bottom-nav"></div>
     </div>
@@ -240,9 +233,8 @@
     // =========================================================================
     // 💡 PWA 強制加入主畫面開關 (Toggle Switch for PWA Mode)
     // 當 PWA_ENFORCE_ENABLED 設為 true 時：若非在 PWA 獨立模式開啟，將強制顯示加入主畫面引導頁。
-    // 當 PWA_ENFORCE_ENABLED 設為設為 false 時：可在任何一般瀏覽器中正常瀏覽。
+    // 當 PWA_ENFORCE_ENABLED 設為 false 時：可在任何一般瀏覽器中正常瀏覽。
     // =========================================================================
-
     const PWA_ENFORCE_ENABLED = true; 
 
     ['contextmenu', 'dragstart'].forEach(evt => {
@@ -250,6 +242,7 @@
             if (['IMG', 'VIDEO'].includes(e.target.tagName)) e.preventDefault();
         }, false);
     });
+
     const TRIP_DATA = {
         flights: [
             { 
@@ -262,7 +255,7 @@
                 duration: "3h 40m", 
                 aircraft: "Airbus A320neo", 
                 class: "經濟", 
-                flightUrl: "https://www.flightaware.com/live/flight/APJ626",
+                flightUrl: "https://www.flightaware.com/live/flight/APJ626"
             },
             { 
                 type: "Return", 
@@ -274,7 +267,7 @@
                 duration: "3h 50m", 
                 aircraft: "Airbus A320", 
                 class: "經濟", 
-                flightUrl: "https://www.flightaware.com/live/flight/JJP11", 
+                flightUrl: "https://www.flightaware.com/live/flight/JJP11" 
             }
         ],
         hotels: [
@@ -345,7 +338,6 @@
                     { title: "Pokémon Center SHIBUYA(澀谷店)", url: "https://maps.app.goo.gl/N6tVqryYmYk1tTBK9" },
                     { title: "Pokémon Center MEGA TOKYO(池袋店)", url: "https://maps.app.goo.gl/uLmWiEBhe3s3wfzJA" },
                     { title: "Pokémon Center YOKOHAMA(橫濱店)", url: "https://maps.app.goo.gl/cWUer8NbQDnHrFZb6" }
-                    
                 ]
             },
             {
@@ -374,8 +366,7 @@
                     { title: "coinlocker地圖", url: "https://coinlocker.click/" }
                 ]
             }
-        ],
-        notes: []
+        ]
     };
 
     const ITEM_STYLES = {
@@ -433,10 +424,8 @@
 
     function checkPwaMode() {
         if (!PWA_ENFORCE_ENABLED) return;
-        
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
         const overlay = document.getElementById('pwa-lock-overlay');
-        
         if (overlay) {
             if (!isStandalone) {
                 overlay.classList.remove('hidden');
