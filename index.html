@@ -1,109 +1,108 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-touch-fullscreen" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Tokyo Trip"> 
-<meta name="application-name" content="Tokyo Trip">
-<meta name="theme-color" content="#d6d3d1">
-
-<link rel="apple-touch-icon" href="Tokyo.jpg">
-<link rel="apple-touch-icon-precomposed" href="Tokyo.jpg">
-<link rel="icon" type="image/jpeg" href="Tokyo.jpg">
-<link rel="manifest" href='data:application/manifest+json,{"name":"Tokyo Trip 2026","short_name":"TokyoTrip","start_url":"./","scope":"./","display":"standalone","display_override":["standalone","minimal-ui"],"orientation":"portrait","background_color":"#d6d3d1","theme_color":"#d6d3d1","icons":[{"src":"Tokyo.jpg","sizes":"192x192","type":"image/jpeg","purpose":"any maskable"},{"src":"Tokyo.jpg","sizes":"512x512","type":"image/jpeg","purpose":"any maskable"}]}'>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-    tailwind.config = { darkMode: 'class' };
-</script>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest"></script>
-
-<style>
-    html, body {
-        width: 100%;
-        height: 100dvh;
-        overflow: hidden; 
-        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        background-color: #d6d3d1; 
-        color: #1c1917; 
-        overscroll-behavior: none; 
-        -webkit-tap-highlight-color: transparent;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    img, video {
-        -webkit-touch-callout: none !important;
-        -webkit-user-select: none !important;
-        user-select: none !important;
-        pointer-events: none !important;
-    }
-
-    #main-content { -webkit-overflow-scrolling: touch; touch-action: pan-y; }
-    #date-scroller, #bottom-nav { -webkit-overflow-scrolling: touch; touch-action: pan-x; }
-
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-in-up, .animate-fade-in { 
-        animation: fadeInUp 0.4s ease-out forwards; 
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Tokyo Trip 2026</title>
     
-    .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
-    .pt-safe { padding-top: env(safe-area-inset-top); }
+    <!-- PWA 與 Web App 核心設定 -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Tokyo Trip"> 
+    <meta name="theme-color" content="#d6d3d1">
+    
+    <!-- 圖示與 Manifest 描述檔 -->
+    <link rel="apple-touch-icon" href="Tokyo.jpg">
+    <link rel="icon" href="Tokyo.jpg">
+    
+    <!-- 外部 UI 框架與圖示庫載入 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-    .signature-wen {
-        font-family: 'Dancing Script', cursive;
-    }
+    <style>
+        html, body {
+            width: 100%;
+            height: 100dvh;
+            overflow: hidden; 
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #d6d3d1; 
+            color: #1c1917; 
+            overscroll-behavior: none; 
+            -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
 
-    html.dark, html.dark body { background-color: #121212 !important; color: #f5f5f4 !important; }
-    html.dark #main-app-container, html.dark #pwa-prompt-screen { background-color: #18181b !important; color: #f5f5f4 !important; }
-    html.dark .bg-stone-300\/85 { background-color: rgba(24, 24, 27, 0.88) !important; }
+        /* 防止手機與電腦瀏覽時儲存/長按選取圖片 */
+        img, video {
+            -webkit-touch-callout: none !important;
+            -webkit-user-select: none !important;
+            user-select: none !important;
+            pointer-events: none !important;
+        }
 
-    html.dark .bg-white\/80, html.dark .bg-white\/90, html.dark .bg-white\/95, html.dark .bg-white {
-        background-color: rgba(39, 39, 42, 0.95) !important;
-        color: #f5f5f4 !important;
-        border-color: rgba(63, 63, 70, 0.6) !important;
-    }
+        #main-content { -webkit-overflow-scrolling: touch; touch-action: pan-y; }
+        #date-scroller, #bottom-nav { -webkit-overflow-scrolling: touch; touch-action: pan-x; }
 
-    html.dark .bg-stone-50, html.dark .bg-stone-50\/50, html.dark .bg-stone-100,
-    html.dark .bg-stone-100\/80, html.dark .bg-stone-200, html.dark .bg-stone-200\/80 {
-        background-color: rgba(52, 52, 56, 0.8) !important;
-        color: #e4e4e7 !important;
-        border-color: rgba(71, 71, 77, 0.5) !important;
-    }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    html.dark .text-stone-900, html.dark .text-stone-800, html.dark .text-stone-700 { color: #f4f4f5 !important; }
-    html.dark .text-stone-600, html.dark .text-stone-500 { color: #a1a1aa !important; }
-    html.dark .text-stone-400 { color: #71717a !important; }
-    html.dark .text-indigo-900 { color: #a5b4fc !important; }
-    html.dark .text-indigo-950 { color: #c7d2fe !important; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up, .animate-fade-in { 
+            animation: fadeInUp 0.4s ease-out forwards; 
+        }
+        
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+        .pt-safe { padding-top: env(safe-area-inset-top); }
 
-    html.dark .border-stone-100, html.dark .border-stone-200, html.dark .border-stone-200\/50,
-    html.dark .border-stone-200\/60, html.dark .border-stone-300\/50 {
-        border-color: rgba(63, 63, 70, 0.6) !important;
-    }
+        /* 暗黑模式 CSS 樣式支援 */
+        html.dark, html.dark body { background-color: #121212 !important; color: #f5f5f4 !important; }
+        html.dark #main-app-container, html.dark #pwa-prompt-screen { background-color: #18181b !important; color: #f5f5f4 !important; }
+        html.dark .bg-stone-300\/85 { background-color: rgba(24, 24, 27, 0.88) !important; }
 
-    html.dark .bg-red-50 { background-color: rgba(127, 29, 29, 0.3) !important; color: #fca5a5 !important; }
-    html.dark .bg-rose-50 { background-color: rgba(136, 19, 55, 0.3) !important; color: #fecdd3 !important; }
-    html.dark .bg-sky-50 { background-color: rgba(12, 74, 110, 0.3) !important; color: #bae6fd !important; }
-    html.dark .bg-emerald-50 { background-color: rgba(6, 78, 59, 0.3) !important; color: #a7f3d0 !important; }
-    html.dark .bg-blue-50 { background-color: rgba(30, 58, 138, 0.3) !important; color: #bfdbfe !important; }
-    html.dark .bg-amber-50 { background-color: rgba(120, 53, 15, 0.3) !important; color: #fde68a !important; }
-    html.dark .bg-indigo-50 { background-color: rgba(49, 46, 129, 0.3) !important; color: #c7d2fe !important; }
-</style>
+        html.dark .bg-white\/80, html.dark .bg-white\/90, html.dark .bg-white\/95, html.dark .bg-white {
+            background-color: rgba(39, 39, 42, 0.95) !important;
+            color: #f5f5f4 !important;
+            border-color: rgba(63, 63, 70, 0.6) !important;
+        }
+
+        html.dark .bg-stone-50, html.dark .bg-stone-50\/50, html.dark .bg-stone-100,
+        html.dark .bg-stone-100\/80, html.dark .bg-stone-200, html.dark .bg-stone-200\/80 {
+            background-color: rgba(52, 52, 56, 0.8) !important;
+            color: #e4e4e7 !important;
+            border-color: rgba(71, 71, 77, 0.5) !important;
+        }
+
+        html.dark .text-stone-900, html.dark .text-stone-800, html.dark .text-stone-700 { color: #f4f4f5 !important; }
+        html.dark .text-stone-600, html.dark .text-stone-500 { color: #a1a1aa !important; }
+        html.dark .text-stone-400 { color: #71717a !important; }
+        html.dark .text-indigo-900 { color: #a5b4fc !important; }
+        html.dark .text-indigo-950 { color: #c7d2fe !important; }
+
+        html.dark .border-stone-100, html.dark .border-stone-200, html.dark .border-stone-200\/50,
+        html.dark .border-stone-200\/60, html.dark .border-stone-300\/50 {
+            border-color: rgba(63, 63, 70, 0.6) !important;
+        }
+
+        html.dark .bg-red-50 { background-color: rgba(127, 29, 29, 0.3) !important; color: #fca5a5 !important; }
+        html.dark .bg-rose-50 { background-color: rgba(136, 19, 55, 0.3) !important; color: #fecdd3 !important; }
+        html.dark .bg-sky-50 { background-color: rgba(12, 74, 110, 0.3) !important; color: #bae6fd !important; }
+        html.dark .bg-emerald-50 { background-color: rgba(6, 78, 59, 0.3) !important; color: #a7f3d0 !important; }
+        html.dark .bg-blue-50 { background-color: rgba(30, 58, 138, 0.3) !important; color: #bfdbfe !important; }
+        html.dark .bg-amber-50 { background-color: rgba(120, 53, 15, 0.3) !important; color: #fde68a !important; }
+        html.dark .bg-indigo-50 { background-color: rgba(49, 46, 129, 0.3) !important; color: #c7d2fe !important; }
+    </style>
 </head>
 <body>
 
-    <!-- 強制加入主畫面引導頁面 (對應 NEW 內 PWA 寫法) -->
+    <!-- 強制加入主畫面引導頁面 -->
     <div id="pwa-prompt-screen" class="hidden fixed inset-0 z-[9999] bg-[#f2f2f4] overflow-y-auto h-full w-full flex flex-col justify-between items-center p-4 sm:p-6 pt-safe pb-safe select-none">
         <div class="w-full max-w-sm flex-1 flex flex-col items-center justify-center space-y-3 sm:space-y-5 my-auto py-2">
             
@@ -120,8 +119,8 @@
             </div>
 
             <div class="w-full bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm border border-stone-200/60 flex flex-col items-center shrink">
-                <div class="w-36 h-36 xs:w-44 xs:h-44 sm:w-48 sm:h-48 rounded-2xl sm:rounded-3xl bg-stone-100/80 overflow-hidden flex items-center justify-center p-2 border border-stone-200/50 shadow-inner mb-3 sm:mb-4">
-                    <img src="Tokyo.jpg" alt="Tokyo Trip 主畫面圖示" class="w-full h-full object-contain rounded-xl sm:rounded-2xl" onerror="this.src='https://placehold.co/200x200/e2e8f0/475569?text=Tokyo+Trip';"/>
+                <div class="w-36 h-36 xs:w-44 xs:h-44 sm:w-48 sm:h-48 rounded-2xl sm:rounded-3xl bg-stone-100/80 overflow-hidden flex items-center justify-center border border-stone-200/50 shadow-inner mb-3 sm:mb-4">
+                    <img src="Tokyo.jpg" alt="Tokyo Trip 主畫面圖示" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/200x200/e2e8f0/475569?text=Tokyo+Trip';"/>
                 </div>
                 <span class="text-stone-700 font-semibold text-xs sm:text-sm">Tokyo Trip 主畫面圖示</span>
             </div>
@@ -176,651 +175,776 @@
         <div class="w-full text-center pt-2 pb-1 shrink-0">
             <div class="inline-flex items-baseline gap-2">
                 <span class="text-stone-400 text-xs sm:text-sm font-normal">Created by</span>
-                <span class="text-2xl sm:text-3xl text-stone-600" style="font-family: 'Dancing Script', cursive;">Wen</span>
+                <span class="text-2xl sm:text-5xl text-stone-600" style="font-family: 'Dancing Script', cursive;">Wen</span>
             </div>
         </div>
     </div>
 
-<div id="main-app-container" class="w-full h-[100dvh] flex flex-col md:max-w-md md:mx-auto shadow-2xl overflow-hidden relative select-none bg-stone-300">
-    
-    <!-- Background Layer (Tokyo.jpg full screen coverage) -->
-    <div class="absolute inset-0 z-0 pointer-events-none w-full h-full overflow-hidden flex items-center justify-center">
-        <img src="Tokyo.jpg" alt="Background" class="w-full h-full object-cover opacity-95"/>
-        <div class="absolute inset-0 bg-stone-300/85 backdrop-blur-[2px]"></div>
-    </div>
-
-    <div class="shrink-0 bg-white/80 backdrop-blur-md border-b border-stone-200/50 shadow-sm z-50">
-        <div class="px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2.5">
-                <div>
-                    <h1 class="text-xl font-black tracking-tighter text-indigo-900">TOKYO TRIP</h1>
-                    <p class="text-xs text-stone-400 font-medium tracking-widest">Oct 25 - Oct 31</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-2">
-                <div id="header-status" class="hidden flex items-center gap-2 bg-white/50 px-3 py-1.5 rounded-full border border-stone-100"></div>
-                <button id="dark-mode-toggle" onclick="toggleDarkMode()" class="p-2 rounded-full bg-stone-100/80 hover:bg-stone-200/80 text-stone-600 transition-colors flex items-center justify-center shrink-0 border border-stone-200/60" title="切換暗黑模式" aria-label="切換暗黑模式">
-                    <i data-lucide="moon" class="w-4 h-4"></i>
-                </button>
-            </div>
-        </div>
+    <!-- 行程主程式容器 -->
+    <div id="main-app-container" class="w-full h-[100dvh] flex flex-col md:max-w-md md:mx-auto shadow-2xl overflow-hidden relative select-none bg-stone-300">
         
-        <div id="date-scroller-container" class="hidden">
-            <div id="date-scroller" class="flex overflow-x-auto gap-3 px-4 pb-3 no-scrollbar snap-x"></div>
+        <!-- 背景圖層 -->
+        <div class="fixed inset-0 z-0 pointer-events-none md:max-w-md md:mx-auto">
+            <img src="Tokyo.jpg" alt="Background" class="w-full h-full object-cover opacity-90" onerror="this.src='https://images.unsplash.com/photo-1598284534720-305f6e409395?q=80&w=1000&auto=format&fit=crop';"/>
+            <div class="absolute inset-0 bg-stone-300/85 backdrop-blur-[2px]"></div>
         </div>
-    </div>
 
-    <div id="main-content" class="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 no-scrollbar overscroll-contain relative z-10"></div>
-
-    <div class="shrink-0 bg-white/90 backdrop-blur-md border-t border-stone-200/50 pb-safe z-50 overflow-x-auto no-scrollbar">
-        <div class="flex justify-between items-center h-16 min-w-max px-2" id="bottom-nav"></div>
-    </div>
-</div>
-
-<script>
-    // =========================================================================
-    // 💡 PWA 強制加入主畫面開關 (Toggle Switch for PWA Mode)
-    // - DEV_PREVIEW_MODE = true  (ON)  : 開啟測試預覽模式 (關閉強制加入主畫面選單)
-    // - DEV_PREVIEW_MODE = false (OFF) : 正式模式 (必須加入手機「主畫面」才能開啟瀏覽)
-    // =========================================================================
-    const DEV_PREVIEW_MODE = true; // 開發預覽模式 ON/OFF
-
-    // 頁尾簽名元件
-    const FOOTER_HTML = `
-        <div class="pt-8 pb-8 text-center text-stone-500 dark:text-stone-400 text-sm tracking-wide flex items-baseline justify-center gap-1.5">
-            <span>Created by</span>
-            <span class="signature-wen text-stone-800 dark:text-stone-200 text-3xl font-bold">Wen</span>
-        </div>
-    `;
-
-    ['contextmenu', 'dragstart'].forEach(evt => {
-        document.addEventListener(evt, e => {
-            if (['IMG', 'VIDEO'].includes(e.target.tagName)) e.preventDefault();
-        }, false);
-    });
-
-    const TRIP_DATA = {
-        flights: [
-            { 
-                type: "Departure", 
-                date: "2026/10/25 (日)", 
-                code: "MM626", 
-                airline: "樂桃航空", 
-                route: "TPE 台北 (10:50) ➔ NRT 成田 (14:30)", 
-                terminal: "TPE T1 / NRT T1", 
-                duration: "3h 40m", 
-                aircraft: "Airbus A320neo", 
-                class: "經濟", 
-                flightUrl: "https://www.flightaware.com/live/flight/APJ626"
-            },
-            { 
-                type: "Return", 
-                date: "2026/10/31 (六)", 
-                code: "GK011", 
-                airline: "捷星日本航空", 
-                route: "NRT 成田 (22:40) ➔ TPE 台北 (01:30+1)", 
-                terminal: "NRT T3 / TPE T1", 
-                duration: "3h 50m", 
-                aircraft: "Airbus A320", 
-                class: "經濟", 
-                flightUrl: "https://www.flightaware.com/live/flight/JJP11" 
-            }
-        ],
-        hotels: [
-            {
-                name: "アパホテル〈浅草駅前〉",
-                engName: "APA Hotel Asakusa Ekimae",
-                stars: 3,
-                dates: "10/25入住~10/31退房 (6晚)",
-                location: "東京都台東區駒形1-12-16 (淺草站步行約1分)",
-                features: ["特色", "近淺草車站", "交通便利", "周邊機能極佳"],
-                note: "位於淺草站前核心區域。周邊美食、藥妝店與景點林立，前往晴空塔、上野及各大東京景點極為便捷。",
-                image: "APA Hotel Asakusa Ekimae.jpg",
-                mapUrl: "https://maps.app.goo.gl/RJSYMwgrqAbPBMLFA"
-            }
-        ],
-        Itinerary: [
-            { id: "day1", date: "10/25", dayOfWeek: "日", location: "台北 ➔ 東京 ➔ 東京晴空塔", weather: "sunny", temp: "20°C", items: [
-                { type: "transport", time: "10:50", title: "搭乘 MM626 飛往東京成田", mapUrl: "https://maps.app.goo.gl/nrt", note: "【航班資訊】\n• 預計 14:30 抵達東京成田國際機場 (NRT Terminal 1)。\n\n【入境與交通】\n• 辦理入境與領取行李，搭乘 Skyliner 或 N'EX 前往東京市區飯店 Check-in。" },
-                { type: "visit", time: "16:30", title: "東京晴空塔 (Tokyo Skytree) & 索拉町", mapUrl: "https://maps.app.goo.gl/skytree", note: "【營業時間】10:00–21:00\n【特色】抵達淺草飯店 Check-in 後隨即前往晴空塔，登上高空展望台俯瞰東京夜景，下樓可至 Solamachi 索拉町商圈逛街採買。" }
-            ]},
-            { id: "day2", date: "10/26", dayOfWeek: "一", location: "明治神宮 ➔ 澀谷 ➔ 新宿一日遊", weather: "sunny", temp: "19°C", items: [
-                { type: "shrine", time: "09:00", title: "明治神宮 & 原宿竹下通 / 表參道", mapUrl: "https://maps.app.goo.gl/meiji", note: "【營業時間】05:20–16:50\n【特色】參拜莊嚴神社，隨後漫步原宿竹下通潮流小店與表參道精品林蔭大道。" },
-                { type: "visit", time: "13:00", title: "澀谷 (Shibuya Sky & 忠犬八公)", mapUrl: "https://maps.app.goo.gl/shibuya", note: "【特色】朝聖著名的澀谷十字路口、忠犬八公像，登上 Shibuya Sky 高空展望台俯瞰東京全景。" },
-                { type: "shop", time: "18:00", title: "新宿商圈 & 歌舞伎町 & 回憶橫丁", mapUrl: "https://maps.app.goo.gl/shinjuku", note: "【特色】伊勢丹、高島屋及 3D 巨貓地標逛街，晚間體驗回憶橫丁居酒屋與歌舞伎町夜生活。" }
-            ]},
-            { id: "day3", date: "10/27", dayOfWeek: "二", location: "鎌倉一日遊", weather: "sunny", temp: "21°C", items: [
-                { type: "ticket", title: "江之島·鎌倉周遊券 (Odakyu Enoshima Kamakura Pass)" },
-                { type: "visit", time: "09:30", title: "高德院 (鎌倉大佛) & 長谷寺", mapUrl: "https://maps.app.goo.gl/kamakura-daibutsu", note: "【營業時間】08:00–17:00\n【特色】搭乘江之電參拜著名的國寶鎌倉大佛與長谷寺觀音。" },
-                { type: "visit", time: "12:30", title: "鎌倉高校前站 (灌籃高手平交道)", mapUrl: "https://maps.app.goo.gl/kamakurakokomae", note: "【經典打卡】《灌籃高手》經典片頭場景，欣賞湘南海岸蔚藍海景。" },
-                { type: "shrine", time: "15:00", title: "江之島 (江島神社 & 老街)", mapUrl: "https://maps.app.goo.gl/enoshima", note: "【特色】漫步江之島老街、參拜江島神社，品嚐吻仔魚丼與海鮮煎餅。" }
-            ]},
-            { id: "day4", date: "10/28", dayOfWeek: "三", location: "神田神社 ➔ 淺草觀音寺 ➔ 上野公園", weather: "sunny", temp: "18°C", items: [
-                { type: "shrine", time: "09:00", title: "神田神社 (神田明神)", mapUrl: "https://maps.app.goo.gl/kandamyojin", note: "【特色】擁有千年以上歷史的古老神社，祈求勝運與商業繁榮，動漫《Love Live!》聖地。" },
-                { type: "shrine", time: "12:00", title: "淺草寺 (淺草觀音寺) & 雷門 & 仲見世商店街", mapUrl: "https://maps.app.goo.gl/sensoji", note: "【營業時間】06:00–17:00 (境內全天開放)\n【特色】東京最古老寺廟，拍照打卡大紅燈籠雷門，漫步仲見世通品嚐人形燒與淺草美食。" },
-                { type: "visit", time: "16:00", title: "上野恩賜公園 & 阿美橫丁", mapUrl: "https://maps.app.goo.gl/ueno", note: "【特色】漫步上野公園綠意與不忍池，隨後前往阿美橫丁藥繳、零食與美食大肆採買。" }
-            ]},
-            { id: "day5", date: "10/29", dayOfWeek: "四", location: "富士山一日遊", weather: "sunny", temp: "16°C", items: [
-                { type: "transport", time: "08:00", title: "搭乘富士回遊特急 / 高速巴士前往河口湖", mapUrl: "https://maps.app.goo.gl/kawaguchiko" },
-                { type: "visit", time: "10:15", title: "新倉山淺間公園 (忠靈塔)", mapUrl: "https://maps.app.goo.gl/arakurayama", note: "【特色】登高遠眺忠靈塔與富士山同框的經典日本絕景。" },
-                { type: "visit", time: "13:00", title: "河口湖大石公園 & 羅森河口湖站前店", mapUrl: "https://maps.app.goo.gl/oishi-park", note: "【特色】湖畔漫步賞富士山景，羅森便利商店拍照熱點打卡。" }
-            ]},
-            { id: "day6", date: "10/30", dayOfWeek: "五", location: "日光一日遊", weather: "cloudy", temp: "15°C", items: [
-                { type: "ticket", title: "日光周遊券 (Nikko Pass)" },
-                { type: "shrine", time: "09:30", title: "日光東照宮 & 輪王寺", mapUrl: "https://maps.app.goo.gl/toshogu", note: "【營業時間】09:00–16:00\n【特色】世界文化遺產，觀賞極致雕刻「陽明門」、「三猿」與「睡貓」。" },
-                { type: "visit", time: "13:30", title: "中禪寺湖 & 華嚴瀑布", mapUrl: "https://maps.app.goo.gl/kegon", note: "【特色】日本三大名瀑之一，搭乘電梯直達瀑布潭底感受壯麗水勢。" }
-            ]},
-            { id: "day7", date: "10/31", dayOfWeek: "六", location: "秋葉原補貨 ➔ 成田機場 ➔ 台北", weather: "sunny", temp: "19°C", items: [
-                { type: "shop", time: "10:00", title: "秋葉原動漫電器街大採購 & 補貨", mapUrl: "https://maps.app.goo.gl/akiba", note: "【採購重點】動漫周邊, 模型, 藥繳與電器賣場 (Yodobashi-Akiba) 最後大掃貨！" },
-                { type: "transport", time: "18:00", title: "前往成田國際機場 Terminal 3", mapUrl: "https://maps.app.goo.gl/nrt3", note: "【搭機指南】\n• 預計 19:30 前抵達 **成田機場第三航廈 (NRT T3)** 辦理捷星日本航空 GK011 登機與託運。\n• GK011 預計 22:40 起飛，翌日 01:30 抵達台北桃園機場。" }
-            ]}
-        ],
-        mapLinks: [
-            {
-                category: "卡片",
-                icon: "credit-card",
-                links: [
-                    { title: "マンホールカード（東京都）", url: "https://cardhunter.jp/list/7mDwYYN74PSGP9EX70onu885N7wg/pref/13" },
-                    { title: "マンホールカード官網", url: "https://www.gk-p.jp/mhcard/" },
-                    { title: "マンホールカード地圖", url: "https://ekikaramanhole.whitebeach.org/ext/manholecard/map/?t=map" }
-                ]
-            },
-            {
-                category: "地點",
-                icon: "map-pin",
-                links: [
-                    { title: "Pokémon Center TOKYO DX (日本橋)", url: "https://maps.app.goo.gl/aGk5WjS1zHRzgFVH6" },
-                    { title: "Pokémon Center SKYTREE TOWN(晴空塔店)", url: "https://maps.app.goo.gl/DBZDcw2iYewJk2k1A" },
-                    { title: "Pokémon Center SHIBUYA(澀谷店)", url: "https://maps.app.goo.gl/N6tVqryYmYk1tTBK9" },
-                    { title: "Pokémon Center MEGA TOKYO(池袋店)", url: "https://maps.app.goo.gl/uLmWiEBhe3s3wfzJA" },
-                    { title: "Pokémon Center YOKOHAMA(橫濱店)", url: "https://maps.app.goo.gl/cWUer8NbQDnHrFZb6" }
-                ]
-            },
-            {
-                category: "交通",
-                icon: "bus",
-                links: [
-                    { title: "東京地鐵乘車券 (Tokyo Subway Ticket)", url: "https://www.tokyometro.jp/tcn/ticket/travel/" },
-                    { title: "JR 東日本鐵路周遊券", url: "https://www.jreast.co.jp/multi/zh-CHT/" },
-                    { title: "小田急江之島·鎌倉周遊券", url: "https://www.odakyu.jp/tc/passes/enoshima_kamakura/" },
-                    { title: "東武日光周遊券", url: "https://www.tobu.co.jp/tcn/ticket/nikko/city/" }
-                ]
-            },
-            {
-                category: "機場",
-                icon: "plane",
-                links: [
-                    { title: "成田國際機場官方網站", url: "https://www.narita-airport.jp/ch2/" },
-                    { title: "Skyliner 京成電鐵時刻表", url: "https://www.keisei.co.jp/keisei/tetudou/skyliner/tc/" }
-                ]
-            },
-            {
-                category: "其他",
-                icon: "ellipsis",
-                links: [
-                    { title: "紀念幣地圖", url: "https://www.stampmedal.com/map.htm" },
-                    { title: "coinlocker地圖", url: "https://coinlocker.click/" }
-                ]
-            }
-        ]
-    };
-
-    const ITEM_STYLES = {
-        shop: { icon: 'shopping-bag', color: 'text-yellow-500', border: 'border-l-yellow-500' },
-        visit: { icon: 'camera', color: 'text-emerald-500', border: 'border-l-emerald-500' },
-        shrine: { emoji: true, color: 'text-stone-800', border: 'border-l-rose-600' },
-        ticket: { icon: 'ticket', color: 'text-indigo-600', border: 'border-l-indigo-600' }
-    };
-
-    const WEATHER_ICONS = {
-        sunny: { name: 'sun', class: 'text-orange-500' },
-        cloudy: { name: 'cloud', class: 'text-gray-500' }
-    };
-
-    const DRIVE_NOTICES = [
-        { title: "右駕左行", text: "日本車輛為右駕，請務必靠左行駛。口訣：「左轉小彎、右轉大彎」節省空間。" },
-        { title: "行人優先", text: "斑馬線若有行人準備過馬路，車輛「絕對必須」完全停止讓行。" },
-        { title: "止まれ (Stop)", text: "看到倒三角形的「止まれ」標誌，車輪必須「完全停止」運轉。" },
-        { title: "右轉禮讓", text: "右轉（跨越對向車道）時，必須禮讓直行車與左轉車。" }
-    ];
-
-    const TRAFFIC_SIGNS = [
-        { title: "一時停止", desc: "務必完全煞停", svg: `<svg viewBox="0 0 100 90" class="w-14 h-14 mx-auto"><polygon points="50,85 5,10 95,10" fill="#e53e3e"/><text x="50" y="38" fill="white" font-size="15" font-weight="bold" text-anchor="middle">止まれ</text><text x="50" y="58" fill="white" font-size="13" font-weight="bold" text-anchor="middle">STOP</text></svg>` },
-        { title: "徐行", desc: "減速慢行", svg: `<svg viewBox="0 0 100 90" class="w-14 h-14 mx-auto"><polygon points="50,85 5,10 95,10" fill="#e53e3e"/><polygon points="50,75 12,15 88,15" fill="white"/><text x="50" y="36" fill="#e53e3e" font-size="15" font-weight="bold" text-anchor="middle">徐行</text><text x="50" y="52" fill="#e53e3e" font-size="11" font-weight="bold" text-anchor="middle">SLOW</text></svg>` },
-        { title: "車輛進入禁止", desc: "禁止駛入", svg: `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><circle cx="50" cy="50" r="45" fill="#e53e3e"/><rect x="15" y="42" width="70" height="16" fill="white" rx="2"/></svg>` },
-        { title: "最高速度", desc: "限制最高時速", svg: `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><circle cx="50" cy="50" r="45" fill="white" stroke="#e53e3e" stroke-width="10"/><text x="50" y="62" fill="#3182ce" font-size="40" font-weight="900" font-family="sans-serif" text-anchor="middle">50</text></svg>` },
-        { title: "單行道", desc: "依箭頭方向", svg: `<svg viewBox="0 0 120 70" class="w-16 h-12 mx-auto"><rect x="2" y="5" width="116" height="60" fill="#1d4ed8" rx="4"/><path d="M 110 20 L 45 20 L 45 10 L 10 35 L 45 60 L 45 50 L 110 50 Z" fill="white"/><text x="65" y="40" fill="#1d4ed8" font-size="12" font-weight="bold" text-anchor="middle">一方通行</text></svg>` },
-        { title: "駐車禁止", desc: "禁止停車", svg: `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><circle cx="50" cy="50" r="45" fill="#3182ce" stroke="#e53e3e" stroke-width="10"/><line x1="20" y1="20" x2="80" y2="80" stroke="#e53e3e" stroke-width="10"/></svg>` },
-        { title: "禁止迴轉", desc: "禁止 U-Turn", svg: `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><circle cx="50" cy="50" r="45" fill="white" stroke="#e53e3e" stroke-width="8"/><path d="M 35 65 L 35 45 A 15 15 0 0 1 65 45 L 65 55 M 58 50 L 65 58 L 72 50" fill="none" stroke="#3182ce" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><line x1="20" y1="20" x2="80" y2="80" stroke="#e53e3e" stroke-width="8"/></svg>` },
-        { title: "指定方向", desc: "僅能直行/轉彎", svg: `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><circle cx="50" cy="50" r="46" fill="#1d4ed8" stroke="white" stroke-width="2"/><path d="M 45 78 L 45 36 L 36 44 L 50 20 L 64 44 L 55 36 L 55 78 Z" fill="white"/><path d="M 48 52 C 38 52 32 46 32 38 L 22 38 L 38 22 L 38 32 C 38 32 48 38 48 52 Z" fill="white"/></svg>` },
-        { title: "駐停車禁止", desc: "禁止臨停", svg: `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><circle cx="50" cy="50" r="45" fill="#3182ce" stroke="#e53e3e" stroke-width="10"/><line x1="20" y1="20" x2="80" y2="80" stroke="#e53e3e" stroke-width="10"/><line x1="80" y1="20" x2="20" y2="80" stroke="#e53e3e" stroke-width="10"/></svg>` },
-        { title: "禁止超車", desc: "禁止超車", svg: `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><circle cx="50" cy="50" r="45" fill="white" stroke="#e53e3e" stroke-width="8"/><text x="50" y="42" fill="#3182ce" font-size="18" font-weight="bold" text-anchor="middle">追越</text><text x="50" y="68" fill="#3182ce" font-size="18" font-weight="bold" text-anchor="middle">禁止</text></svg>` }
-    ];
-
-    const ROAD_MARKINGS = [
-        { title: "白色虛線", desc: "可變換車道", lineStyle: `<div class="w-full h-12 bg-stone-600 rounded flex items-center justify-center px-2"><div class="w-full h-0 border-b-2 border-dashed border-white"></div></div>` },
-        { title: "白色實線", desc: "可變換車道 (注意安全)", lineStyle: `<div class="w-full h-12 bg-stone-600 rounded flex items-center justify-center px-2"><div class="w-full h-1 bg-white"></div></div>` },
-        { title: "橘黃色實線", desc: "🚫 禁止變換車道", lineStyle: `<div class="w-full h-12 bg-stone-600 rounded flex items-center justify-center px-2"><div class="w-full h-1 bg-amber-500"></div></div>` },
-        { title: "雙橘實線", desc: "⚠️ 嚴禁跨越/迴轉", lineStyle: `<div class="w-full h-12 bg-stone-600 rounded flex flex-col items-center justify-center gap-1 px-2"><div class="w-full h-0.5 bg-amber-500"></div><div class="w-full h-0.5 bg-amber-500"></div></div>` },
-        { title: "停車格：輕", desc: "🟡 輕自動車專用", lineStyle: `<div class="w-full h-12 bg-stone-600 rounded flex items-center justify-center"><div class="border-2 border-amber-400 text-amber-400 font-bold text-xs px-2 py-0.5 rounded">輕</div></div>` }
-    ];
-
-    const NAV_TABS = [
-        { id: 'Itinerary', label: '行程', icon: 'calendar', color: 'text-amber-600' },
-        { id: 'flights', label: '航班/住宿', icon: 'plane' },
-        { id: 'manhole', label: '自駕須知', icon: 'circle-alert' },
-        { id: 'map', label: '地圖', icon: 'map', color: 'text-emerald-600' },
-        { id: 'notes', label: '備註', icon: 'notebook-pen', color: 'text-pink-600' }
-    ];
-
-    const state = {
-        activeTab: 'Itinerary',
-        selectedDayId: 'day1'
-    };
-
-    function checkPwaStatus() {
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
-                             (window.navigator.standalone === true) ||
-                             document.referrer.includes('android-app://');
-
-        const showApp = DEV_PREVIEW_MODE || isStandalone;
-        const pwaScreen = document.getElementById('pwa-prompt-screen');
-        const mainAppScreen = document.getElementById('main-app-container');
-
-        if (pwaScreen) pwaScreen.classList.toggle('hidden', showApp);
-        if (mainAppScreen) mainAppScreen.classList.toggle('hidden', !showApp);
-
-        if (showApp) updateView();
-        lucide.createIcons();
-    }
-
-    function switchGuideTab(os) {
-        const isIos = os === 'ios';
-        const activeClass = "flex-1 py-2 sm:py-2.5 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 transition-all bg-white text-indigo-950 font-bold shadow-sm";
-        const inactiveClass = "flex-1 py-2 sm:py-2.5 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 transition-all text-stone-500 hover:text-stone-800";
-
-        document.getElementById('tab-ios').className = isIos ? activeClass : inactiveClass;
-        document.getElementById('tab-android').className = isIos ? inactiveClass : activeClass;
-        document.getElementById('guide-ios').classList.toggle('hidden', !isIos);
-        document.getElementById('guide-android').classList.toggle('hidden', isIos);
-        lucide.createIcons();
-    }
-
-    function getDeletedItems() {
-        try { return JSON.parse(localStorage.getItem('deleted_itinerary_items') || '[]'); }
-        catch (e) { return []; }
-    }
-
-    function toggleDeleteItem(itemId) {
-        const deleted = getDeletedItems();
-        const index = deleted.indexOf(itemId);
-        if (index > -1) deleted.splice(index, 1);
-        else deleted.push(itemId);
-        localStorage.setItem('deleted_itinerary_items', JSON.stringify(deleted));
-        updateView();
-    }
-
-    function toggleDarkMode() {
-        const isDark = document.documentElement.classList.toggle('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        updateThemeIcon();
-        const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', isDark ? '#121212' : '#d6d3d1');
-    }
-
-    function updateThemeIcon() {
-        const btn = document.getElementById('dark-mode-toggle');
-        if (btn) {
-            const isDark = document.documentElement.classList.contains('dark');
-            btn.innerHTML = isDark 
-                ? `<i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>` 
-                : `<i data-lucide="moon" class="w-4 h-4 text-stone-600"></i>`;
-            lucide.createIcons();
-        }
-    }
-
-    function initTheme() {
-        const savedTheme = localStorage.getItem('theme');
-        const isDark = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-        document.documentElement.classList.toggle('dark', isDark);
-        const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', isDark ? '#121212' : '#d6d3d1');
-        updateThemeIcon();
-    }
-
-    const getGoogleMapUrl = name => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}`;
-    const getIcon = (name, classes = "", size = 24) => `<i data-lucide="${name}" class="${classes}" width="${size}" height="${size}"></i>`;
-
-    const renderWeatherIcon = type => {
-        const icon = WEATHER_ICONS[type] || WEATHER_ICONS.sunny;
-        return getIcon(icon.name, `w-5 h-5 ${icon.class}`);
-    };
-
-    function renderItineraryItem(item, itemId, isDeleted) {
-        if (item.type === 'ticket') {
-            const s = ITEM_STYLES.ticket;
-            return `
-            <div class="flex items-center gap-4 p-4 bg-white/95 backdrop-blur-sm rounded-lg border-l-4 shadow-sm mb-3 ${s.border} active:bg-stone-50 transition-all ${isDeleted ? 'opacity-50 grayscale bg-stone-100/70' : ''}">
-                <div class="flex items-center justify-center min-w-[50px]">
-                    <div class="p-1.5 rounded-full bg-stone-50 ${s.color}">${getIcon(s.icon, "", 18)}</div>
-                </div>
-                <div class="flex-1">
-                    <h3 class="font-bold text-stone-800 text-lg leading-tight select-text ${isDeleted ? 'line-through decoration-red-500 decoration-2 text-stone-400' : ''}">${item.title}</h3>
-                </div>
-                <button onclick="toggleDeleteItem('${itemId}')" class="p-2 ${isDeleted ? 'bg-amber-100 text-amber-700 hover:bg-amber-200' : 'bg-red-50 text-red-500 hover:bg-red-100'} rounded-full active:scale-95 shrink-0 transition-colors" title="${isDeleted ? '復原行程' : '刪除行程'}">
-                    ${getIcon(isDeleted ? 'rotate-ccw' : 'trash-2', "", 18)}
-                </button>
-            </div>`;
-        }
-
-        let iconName = 'map-pin', iconColor = "text-stone-400", borderColor = "border-stone-200", isEmoji = false;
-        const s = ITEM_STYLES[item.type];
-
-        if (s) {
-            if (s.emoji) isEmoji = true; else iconName = s.icon;
-            iconColor = s.color; borderColor = s.border;
-        } else if (item.type === 'transport') {
-            const t = item.title;
-            if (t.includes("MM626") || t.includes("GK011")) {
-                iconName = 'plane'; iconColor = "text-amber-600"; borderColor = "border-l-amber-600";
-            } else if (t.includes("公車") || t.includes("巴士")) {
-                iconName = 'bus'; iconColor = "text-teal-600"; borderColor = "border-l-teal-600";
-            } else {
-                iconName = 'train-front'; iconColor = "text-indigo-400"; borderColor = "border-l-indigo-400";
-            }
-        }
-
-        const destinationUrl = item.mapUrl || getGoogleMapUrl(item.title);
-
-        return `
-        <div class="flex gap-4 p-4 bg-white/95 backdrop-blur-sm rounded-lg border-l-4 shadow-sm mb-3 ${borderColor} active:bg-stone-50 transition-all ${isDeleted ? 'opacity-50 grayscale bg-stone-100/70' : ''}">
-            <div class="flex flex-col items-center min-w-[50px]">
-                ${item.time ? `<span class="text-sm font-bold text-stone-600 font-mono ${isDeleted ? 'line-through text-stone-400' : ''}">${item.time}</span>` : ''}
-                <div class="mt-2 p-1.5 rounded-full bg-stone-50 ${iconColor}">
-                    ${isEmoji ? '<span class="text-lg leading-none">⛩️</span>' : getIcon(iconName, "", 18)}
-                </div>
-            </div>
-            <div class="flex-1">
-                <div class="flex items-start justify-between">
-                    <h3 class="font-bold text-stone-800 text-lg leading-tight w-[calc(100%-110px)] sm:w-[calc(100%-150px)] select-text ${isDeleted ? 'line-through decoration-red-500 decoration-2 text-stone-400' : ''}">${item.title}</h3>
-                    <div class="flex gap-1.5 shrink-0 items-center"> 
-                        <a href="${destinationUrl}" target="_blank" class="p-2 bg-blue-50 text-blue-600 rounded-full active:scale-95 shrink-0" title="地圖導航">${getIcon('navigation', "", 18)}</a>
-                        <button onclick="toggleDeleteItem('${itemId}')" class="p-2 ${isDeleted ? 'bg-amber-100 text-amber-700 hover:bg-amber-200' : 'bg-red-50 text-red-500 hover:bg-red-100'} rounded-full active:scale-95 shrink-0 transition-colors" title="${isDeleted ? '復原行程' : '刪除行程'}">
-                            ${getIcon(isDeleted ? 'rotate-ccw' : 'trash-2', "", 18)}
-                        </button>
+        <!-- 頁首導航區 -->
+        <div class="shrink-0 bg-white/80 backdrop-blur-md border-b border-stone-200/50 shadow-sm z-50">
+            <div class="px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center gap-2.5">
+                    <div>
+                        <h1 class="text-xl font-black tracking-tighter text-indigo-900">TOKYO TRIP</h1>
+                        <p class="text-xs text-stone-400 font-medium tracking-widest">Oct 25 - Oct 31</p>
                     </div>
                 </div>
-                ${item.note ? `<div class="mt-2 text-sm text-stone-600 leading-relaxed bg-stone-50 p-3 rounded border border-stone-100 whitespace-pre-line select-text ${isDeleted ? 'line-through opacity-60' : ''}">${item.note}</div>` : ''}
-            </div>
-        </div>`;
-    }
-
-    function renderItineraryView(dayId) {
-        const currentDayData = TRIP_DATA.Itinerary.find(d => d.id === dayId);
-        if (!currentDayData) return '';
-
-        const headerStatus = document.getElementById('header-status');
-        headerStatus.innerHTML = `${renderWeatherIcon(currentDayData.weather)}<span class="text-sm font-bold text-stone-600">${currentDayData.temp}</span>`;
-        headerStatus.classList.remove('hidden');
-
-        const hasItems = currentDayData.items && currentDayData.items.length > 0;
-        const deletedSet = new Set(getDeletedItems());
-
-        return `
-            <div class="animate-fade-in-up pb-6">
-                <div class="flex items-center justify-between mb-4 px-1">
-                    <h2 class="text-xl font-bold text-stone-800">Day ${dayId.replace('day', '')} <span class="ml-2 text-xl font-bold text-stone-800">${currentDayData.location}</span></h2>
+                <div class="flex items-center gap-2">
+                    <div id="header-status" class="hidden flex items-center gap-2 bg-white/50 px-3 py-1.5 rounded-full border border-stone-100"></div>
+                    <button id="dark-mode-toggle" onclick="toggleDarkMode()" class="p-2 rounded-full bg-stone-100/80 hover:bg-stone-200/80 text-stone-600 transition-colors flex items-center justify-center shrink-0 border border-stone-200/60" title="切換暗黑模式" aria-label="切換暗黑模式">
+                        <i data-lucide="moon" class="w-4 h-4"></i>
+                    </button>
                 </div>
-                ${hasItems 
-                    ? currentDayData.items.map((item, index) => {
-                        const itemId = `${dayId}_${index}`;
-                        return renderItineraryItem(item, itemId, deletedSet.has(itemId));
-                      }).join('')
-                    : '<div class="text-center py-10 text-stone-500 bg-white/50 rounded-xl border border-stone-200">此日期暫無行程資料</div>'
+            </div>
+            
+            <div id="date-scroller-container" class="hidden">
+                <div id="date-scroller" class="flex overflow-x-auto gap-3 px-4 pb-3 no-scrollbar snap-x"></div>
+            </div>
+        </div>
+
+        <!-- 主要內容呈現區 -->
+        <div id="main-content" class="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 no-scrollbar overscroll-contain relative z-10 pb-6"></div>
+
+        <!-- 底部導航列 -->
+        <div class="shrink-0 bg-white/90 backdrop-blur-md border-t border-stone-200/50 pb-safe z-50 overflow-x-auto no-scrollbar">
+            <div class="flex justify-between items-center h-16 min-w-max px-2" id="bottom-nav"></div>
+        </div>
+    </div>
+
+   <script>
+         /* ==========================================================================
+           【開發 / 測試預覽模式與圖片開關設定】
+           - DEV_PREVIEW_MODE = true  (ON)  : 開啟測試預覽模式 (關閉強制加入主畫面選單)
+           - DEV_PREVIEW_MODE = false (OFF) : 正式模式 (必須加入手機「主畫面」才能開啟瀏覽)
+           ========================================================================== */
+        const DEV_PREVIEW_MODE = false; // 開發預覽模式 ON/OFF
+       
+
+        const FOOTER_HTML = `
+            <div class="w-full text-center pt-6 pb-2 shrink-0">
+                <div class="inline-flex items-baseline gap-2">
+                    <span class="text-stone-400 text-xs sm:text-sm font-normal">Created by</span>
+                    <span class="text-2xl sm:text-5xl text-stone-600" style="font-family: 'Dancing Script', cursive;">Wen</span>
+                </div>
+            </div>`;
+
+        ['contextmenu', 'dragstart'].forEach(evt => {
+            document.addEventListener(evt, e => {
+                if (['IMG', 'VIDEO'].includes(e.target.tagName)) e.preventDefault();
+            }, false);
+        });
+
+        const TRIP_DATA = {
+            Itinerary: [
+                { id: "day1", date: "10/25", dayOfWeek: "日", location: "台北 ➔ 東京 ➔ 東京晴空塔", weather: "sunny", temp: "20°C", items: [
+                    { type: "transport", time: "10:50", title: "搭乘 MM626 飛往東京成田", mapUrl: "https://maps.app.goo.gl/nrt", note: "【航班資訊】\n• 預計 14:30 抵達東京成田國際機場 (NRT Terminal 1)。\n\n【入境與交通】\n• 辦理入境與領取行李，搭乘 Skyliner 或 N'EX 前往東京市區飯店 Check-in。" },
+                    { type: "visit", time: "16:30", title: "東京晴空塔 (Tokyo Skytree) & 索拉町", mapUrl: "https://maps.app.goo.gl/skytree", note: "【營業時間】10:00–21:00\n【特色】抵達淺草飯店 Check-in 後隨即前往晴空塔，登上高空展望台俯瞰東京夜景，下樓可至 Solamachi 索拉町商圈逛街採買。" }
+                ]},
+                { id: "day2", date: "10/26", dayOfWeek: "一", location: "明治神宮 ➔ 澀谷 ➔ 新宿一日遊", weather: "sunny", temp: "19°C", items: [
+                    { type: "shrine", time: "09:00", title: "明治神宮 & 原宿竹下通 / 表參道", mapUrl: "https://maps.app.goo.gl/meiji", note: "【營業時間】05:20–16:50\n【特色】參拜莊嚴神社，隨後漫步原宿竹下通潮流小店與表參道精品林蔭大道。" },
+                    { type: "visit", time: "13:00", title: "澀谷 (Shibuya Sky & 忠犬八公)", mapUrl: "https://maps.app.goo.gl/shibuya", note: "【特色】朝聖著名的澀谷十字路口、忠犬八公像，登上 Shibuya Sky 高空展望台俯瞰東京全景。" },
+                    { type: "shop", time: "18:00", title: "新宿商圈 & 歌舞伎町 & 回憶橫丁", mapUrl: "https://maps.app.goo.gl/shinjuku", note: "【特色】伊勢丹、高島屋及 3D 巨貓地標逛街，晚間體驗回憶橫丁居酒屋與歌舞伎町夜生活。" }
+                ]},
+                { id: "day3", date: "10/27", dayOfWeek: "二", location: "鎌倉一日遊", weather: "sunny", temp: "21°C", items: [
+                    { type: "ticket", title: "江之島·鎌倉周遊券 (Odakyu Enoshima Kamakura Pass)" },
+                    { type: "visit", time: "09:30", title: "高德院 (鎌倉大佛) & 長谷寺", mapUrl: "https://maps.app.goo.gl/kamakura-daibutsu", note: "【營業時間】08:00–17:00\n【特色】搭乘江之電參拜著名的國寶鎌倉大佛與長谷寺觀音。" },
+                    { type: "visit", time: "12:30", title: "鎌倉高校前站 (灌籃高手平交道)", mapUrl: "https://maps.app.goo.gl/kamakurakokomae", note: "【經典打卡】《灌籃高手》經典片頭場景，欣賞湘南海岸蔚藍海景。" },
+                    { type: "shrine", time: "15:00", title: "江之島 (江島神社 & 老街)", mapUrl: "https://maps.app.goo.gl/enoshima", note: "【特色】漫步江之島老街、參拜江島神社，品嚐吻仔魚丼與海鮮煎餅。" }
+                ]},
+                { id: "day4", date: "10/28", dayOfWeek: "三", location: "神田神社 ➔ 淺草觀音寺 ➔ 上野公園", weather: "sunny", temp: "18°C", items: [
+                    { type: "shrine", time: "09:00", title: "神田神社 (神田明神)", mapUrl: "https://maps.app.goo.gl/kandamyojin", note: "【特色】擁有千年以上歷史的古老神社，祈求勝運與商業繁榮，動漫《Love Live!》聖地。" },
+                    { type: "shrine", time: "12:00", title: "淺草寺 (淺草觀音寺) & 雷門 & 仲見世商店街", mapUrl: "https://maps.app.goo.gl/sensoji", note: "【營業時間】06:00–17:00 (境內全天開放)\n【特色】東京最古老寺廟，拍照打卡大紅燈籠雷門，漫步仲見世通品嚐人形燒與淺草美食。" },
+                    { type: "visit", time: "16:00", title: "上野恩賜公園 & 阿美橫丁", mapUrl: "https://maps.app.goo.gl/ueno", note: "【特色】漫步上野公園綠意與不忍池，隨後前往阿美橫丁藥繳、零食與美食大肆採買。" }
+                ]},
+                { id: "day5", date: "10/29", dayOfWeek: "四", location: "富士山一日遊", weather: "sunny", temp: "16°C", items: [
+                    { type: "transport", time: "08:00", title: "搭乘富士回遊特急 / 高速巴士前往河口湖", mapUrl: "https://maps.app.goo.gl/kawaguchiko" },
+                    { type: "visit", time: "10:15", title: "新倉山淺間公園 (忠靈塔)", mapUrl: "https://maps.app.goo.gl/arakurayama", note: "【特色】登高遠眺忠靈塔與富士山同框的經典日本絕景。" },
+                    { type: "visit", time: "13:00", title: "河口湖大石公園 & 羅森河口湖站前店", mapUrl: "https://maps.app.goo.gl/oishi-park", note: "【特色】湖畔漫步賞富士山景，羅森便利商店拍照熱點打卡。" }
+                ]},
+                { id: "day6", date: "10/30", dayOfWeek: "五", location: "日光一日遊", weather: "cloudy", temp: "15°C", items: [
+                    { type: "ticket", title: "日光周遊券 (Nikko Pass)" },
+                    { type: "shrine", time: "09:30", title: "日光東照宮 & 輪王寺", mapUrl: "https://maps.app.goo.gl/toshogu", note: "【營業時間】09:00–16:00\n【特色】世界文化遺產，觀賞極致雕刻「陽明門」、「三猿」與「睡貓」。" },
+                    { type: "visit", time: "13:30", title: "中禪寺湖 & 華嚴瀑布", mapUrl: "https://maps.app.goo.gl/kegon", note: "【特色】日本三大名瀑之一，搭乘電梯直達瀑布潭底感受壯麗水勢。" }
+                ]},
+                { id: "day7", date: "10/31", dayOfWeek: "六", location: "秋葉原補貨 ➔ 成田機場 ➔ 台北", weather: "sunny", temp: "19°C", items: [
+                    { type: "shop", time: "10:00", title: "秋葉原動漫電器街大採購 & 補貨", mapUrl: "https://maps.app.goo.gl/akiba", note: "【採購重點】動漫周邊, 模型, 藥繳與電器賣場 (Yodobashi-Akiba) 最後大掃貨！" },
+                    { type: "transport", time: "18:00", title: "前往成田國際機場 Terminal 3", mapUrl: "https://maps.app.goo.gl/nrt3", note: "【搭機指南】\n• 預計 19:30 前抵達 **成田機場第三航廈 (NRT T3)** 辦理捷星日本航空 GK011 登機與託運。\n• GK011 預計 22:40 起飛，翌日 01:30 抵達台北桃園機場。" }
+                ]}
+            ],
+            flights: [
+                { 
+                    type: "Departure", 
+                    date: "2026/10/25 (日)", 
+                    code: "MM626", 
+                    airline: "樂桃航空", 
+                    route: "TPE 台北 (10:50) ➔ NRT 成田 (14:30)", 
+                    terminal: "TPE T1 / NRT T1", 
+                    duration: "3h 40m", 
+                    aircraft: "Airbus A320neo", 
+                    class: "經濟", 
+                    flightUrl: "https://www.flightaware.com/live/flight/APJ626"
+                },
+                { 
+                    type: "Return", 
+                    date: "2026/10/31 (六)", 
+                    code: "GK011", 
+                    airline: "捷星日本航空", 
+                    route: "NRT 成田 (22:40) ➔ TPE 台北 (01:30+1)", 
+                    terminal: "NRT T3 / TPE T1", 
+                    duration: "3h 50m", 
+                    aircraft: "Airbus A320", 
+                    class: "經濟", 
+                    flightUrl: "https://www.flightaware.com/live/flight/JJP11" 
                 }
-                ${FOOTER_HTML}
-            </div>`;
-    }
-
-    function renderFlightsView() {
-        const flightsHtml = TRIP_DATA.flights.map(flight => `
-            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-stone-200 overflow-hidden p-5 mb-4">
-                <div class="flex items-center justify-between mb-4 border-b border-stone-100 pb-3">
-                    <span class="text-xs font-bold px-2 py-1 rounded ${flight.type === 'Departure' ? 'bg-indigo-100 text-indigo-700' : 'bg-orange-100 text-orange-700'}">${flight.type === 'Departure' ? '去程' : '回程'}</span>
-                    <span class="font-mono font-bold text-stone-500">${flight.date}</span>
-                </div>
-                <div class="flex justify-between items-center mb-2">
-                    <div class="flex items-center gap-3">
-                        <div class="text-3xl font-black text-stone-800">${flight.code}</div>
-                        ${flight.flightUrl ? `<a href="${flight.flightUrl}" target="_blank" class="p-1.5 bg-sky-50 text-sky-600 rounded-full active:scale-95 transition-transform">${getIcon('circle-alert', "", 18)}</a>` : ''}
-                    </div>
-                    <div class="text-stone-300 rotate-45">${getIcon('plane', "", 24)}</div>
-                </div>
-                <div class="text-sm font-medium text-stone-600 mb-4">${flight.airline} • ${flight.class}</div>
-                <div class="bg-stone-50 p-4 rounded-lg text-center border border-stone-100">
-                    <div class="text-lg font-bold text-stone-800 mb-1">${flight.route}</div>
-                    <div class="text-xs text-stone-500">${flight.terminal} • ${flight.duration} • ${flight.aircraft}</div>
-                </div>
-            </div>`).join('');
-
-        const hotelsHtml = TRIP_DATA.hotels.map(hotel => `
-            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-stone-200 overflow-hidden p-0 mb-4">
-                <div class="bg-stone-200 relative overflow-hidden flex justify-center items-center">
-                    ${hotel.image ? `<img src="${hotel.image}" alt="${hotel.name}">` : `<div class="w-full h-40 bg-gradient-to-r from-stone-200 to-stone-300 flex items-center justify-center">${getIcon('bed-double', "text-white w-10 h-10 opacity-50")}</div>`}
-                </div>
-                <div class="p-5">
-                    <div class="flex justify-between items-start mb-1">
-                        <div>
-                            <h3 class="text-lg font-bold text-stone-800 leading-tight">${hotel.name}</h3>
-                            ${hotel.stars ? `
-                                <div class="flex items-center gap-1 text-amber-500 text-xs font-bold mt-1">
-                                    <div class="flex items-center gap-0.5">
-                                        ${Array(hotel.stars).fill(getIcon('star', "fill-amber-400 text-amber-400", 14)).join('')}
-                                    </div>
-                                    <span class="text-stone-500 font-medium ml-1">${hotel.stars} 星級飯店</span>
-                                </div>
-                            ` : ''}
-                        </div>
-                        <span class="text-xs bg-stone-100 text-stone-600 px-2 py-1 rounded font-medium whitespace-nowrap shrink-0 ml-2">${hotel.dates}</span>
-                    </div>
-                    <p class="text-xs text-stone-400 mb-4 font-mono">${hotel.engName}</p>
-                    <div class="flex items-start gap-2 mb-4 text-sm text-stone-600">${getIcon('map-pin', "mt-0.5 text-stone-400 shrink-0", 16)}<span>${hotel.location}</span></div>
-                    <div class="flex flex-wrap gap-2 mb-4">${hotel.features.map(f => `<span class="text-[10px] px-2 py-1 bg-indigo-50 text-indigo-600 rounded">${f}</span>`).join('')}</div>
-                    <div class="bg-amber-50 p-3 rounded text-sm text-amber-800 border border-amber-100 flex gap-2 leading-relaxed">${getIcon('info', "shrink-0 mt-0.5", 16)}<span>${hotel.note}</span></div>
-                    <a href="${hotel.mapUrl || getGoogleMapUrl(hotel.name)}" target="_blank" class="mt-4 block w-full py-3 bg-stone-800 text-white text-center rounded-lg text-sm font-bold active:bg-stone-900 transition active:scale-[0.98]">導航至飯店</a>
-                </div>
-            </div>`).join('');
-
-        return `<div class="space-y-4 animate-fade-in pb-6"><h2 class="text-xl font-bold text-stone-800 px-1">航班資訊</h2>${flightsHtml}<h2 class="text-xl font-bold text-stone-800 px-1 mt-8 pt-4 border-t border-stone-300/50">住宿資訊</h2>${hotelsHtml}${FOOTER_HTML}</div>`;
-    }
-
-    function renderDriveView() {
-        return `
-            <div class="animate-fade-in space-y-6 pb-6">
-                <div>
-                    <h2 class="text-xl font-bold text-stone-800 px-1 mb-3 flex items-center gap-2">
-                        ${getIcon('car', "text-emerald-600", 24)} 日本自駕注意事項
-                    </h2>
-                    <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-stone-200 overflow-hidden mb-4 flex justify-center items-center">
-                        <img src="car.jpg" alt="日本自駕須知">
-                    </div>
-                    <div class="space-y-3">
-                        ${DRIVE_NOTICES.map(item => `
-                            <div class="bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-stone-200 border-l-4 border-l-lime-500 flex gap-3">
-                                <div class="mt-0.5 text-amber-500 shrink-0">${getIcon('triangle-alert', "", 20)}</div>
-                                <div>
-                                    <h3 class="font-bold text-stone-800 text-base mb-1">${item.title}</h3>
-                                    <p class="text-sm text-stone-600 leading-relaxed">${item.text}</p>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-
-                <div>
-                    <h2 class="text-xl font-bold text-stone-800 px-1 mb-3 flex items-center gap-2">
-                        <span class="w-1.5 h-5 bg-stone-500 rounded-full inline-block"></span> 常用交通號誌
-                    </h2>
-                    <div class="grid grid-cols-2 gap-3">
-                        ${TRAFFIC_SIGNS.map(sign => `
-                            <div class="bg-white/95 backdrop-blur-sm p-3.5 rounded-xl shadow-sm border border-stone-200 text-center flex flex-col items-center justify-between">
-                                <div class="my-2 flex items-center justify-center h-16 w-full">${sign.svg}</div>
-                                <div class="mt-1">
-                                    <div class="font-bold text-stone-800 text-sm">${sign.title}</div>
-                                    <div class="text-[11px] text-stone-500 mt-0.5">${sign.desc}</div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-
-                <div>
-                    <h2 class="text-xl font-bold text-stone-800 px-1 mb-3 flex items-center gap-2">
-                        <span class="w-1.5 h-5 bg-amber-500 rounded-full inline-block"></span> 道路標線辨識
-                    </h2>
-                    <div class="space-y-2.5">
-                        ${ROAD_MARKINGS.map(m => `
-                            <div class="bg-white/95 backdrop-blur-sm p-3 rounded-xl shadow-sm border border-stone-200 flex items-center gap-3">
-                                <div class="w-28 shrink-0">${m.lineStyle}</div>
-                                <div>
-                                    <div class="font-bold text-stone-800 text-sm">${m.title}</div>
-                                    <div class="text-xs text-stone-500 mt-0.5">${m.desc}</div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                ${FOOTER_HTML}
-            </div>`;
-    }
-
-    function renderMapView() {
-        const mapHtml = TRIP_DATA.mapLinks.map(cat => `
-            <div class="bg-white/95 backdrop-blur-sm rounded-xl p-5 shadow-sm border border-stone-200 mb-4">
-                <h3 class="text-xl font-black text-stone-800 mb-3.5 flex items-center gap-2.5 border-b border-stone-100 pb-2.5">
-                    ${getIcon(cat.icon || 'map-pin', "text-emerald-600", 24)}
-                    <span class="text-xl font-bold tracking-tight">${cat.category}</span>
-                </h3>
-                <div class="space-y-2.5">
-                    ${cat.links.map(link => `
-                        <a href="${link.url}" target="_blank" class="flex items-center justify-between p-3.5 rounded-xl bg-stone-50 hover:bg-stone-100 border border-stone-200/80 transition-all active:scale-[0.99] group">
-                            <span class="font-bold text-stone-800 text-base sm:text-lg leading-snug group-hover:text-indigo-600 transition-colors">${link.title}</span>${getIcon('external-link', "text-stone-400 group-hover:text-indigo-600 shrink-0 ml-2", 20)}
-                        </a>
-                    `).join('')}
-                </div>
-            </div>
-        `).join('');
-
-        return `
-            <div class="space-y-4 animate-fade-in pb-6">
-                <h2 class="text-2xl font-black text-stone-800 px-1 mb-2 flex items-center gap-2.5">
-                    ${getIcon('map', "text-emerald-600", 26)} 
-                    <span>地圖與實用連結</span>
-                </h2>
-                ${mapHtml}
-                ${FOOTER_HTML}
-            </div>`;
-    }
-
-    function renderNotesView() {
-        return `
-            <div class="space-y-4 animate-fade-in pb-6">
-                <h2 class="text-xl font-bold text-stone-800 px-1 mb-3">備註</h2>
-                
-                <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-stone-200 overflow-hidden mb-4">
-                    <div class="p-4 border-b border-stone-100 font-bold text-stone-800 flex items-center gap-2">
-                        ${getIcon('train-front', "text-pink-600", 20)} 東京地鐵車站標示
-                    </div>
-                    <div class="p-3 bg-stone-100 dark:bg-stone-900 flex justify-center items-center">
-                        <img src="tokyometro.jpg" alt="東京地鐵車站標示" class="rounded-lg shadow-sm">
-                    </div>
-                </div>
-
-                <div class="text-center py-6 text-stone-500 bg-white/50 rounded-xl border border-stone-200">暫無其他備註內容</div>
-                ${FOOTER_HTML}
-            </div>`;
-    }
-
-    function renderDateScroller() {
-        const scroller = document.getElementById('date-scroller');
-        if (!scroller) return;
-
-        scroller.innerHTML = TRIP_DATA.Itinerary.map(day => {
-            const isActive = day.id === state.selectedDayId;
-            return `
-                <button onclick="selectDay('${day.id}')" class="snap-center shrink-0 flex flex-col items-center justify-center w-16 h-16 rounded-2xl transition-all duration-200 ${
-                    isActive 
-                        ? 'bg-indigo-900 text-white font-bold shadow-md scale-105 border-2 border-indigo-900' 
-                        : 'bg-white/80 text-stone-600 border border-stone-200/80 hover:bg-stone-150'
-                }">
-                    <span class="text-[10px] uppercase font-semibold opacity-80">${day.date}</span>
-                    <span class="text-lg font-black leading-tight">${day.dayOfWeek}</span>
-                </button>
-            `;
-        }).join('');
-    }
-
-    function selectDay(dayId) {
-        state.selectedDayId = dayId;
-        renderDateScroller();
-        updateView();
-    }
-
-    function renderBottomNav() {
-        const nav = document.getElementById('bottom-nav');
-        if (!nav) return;
-
-        nav.innerHTML = NAV_TABS.map(tab => {
-            const isActive = tab.id === state.activeTab;
-            const colorClass = isActive ? (tab.color || 'text-indigo-900') : 'text-stone-400 hover:text-stone-600';
-            return `
-                <button onclick="switchTab('${tab.id}')" class="flex flex-col items-center justify-center py-1 px-3 min-w-[64px] transition-all ${colorClass}">
-                    <div class="p-1 rounded-xl ${isActive ? 'bg-stone-100/80' : ''}">
-                        ${getIcon(tab.icon, "w-5 h-5")}
-                    </div>
-                    <span class="text-[11px] mt-0.5 font-bold whitespace-nowrap">${tab.label}</span>
-                </button>
-            `;
-        }).join('');
-        lucide.createIcons();
-    }
-
-    function switchTab(tabId) {
-        state.activeTab = tabId;
-        renderBottomNav();
-        updateView();
-    }
-
-    function updateView() {
-        const mainContent = document.getElementById('main-content');
-        const dateScrollerContainer = document.getElementById('date-scroller-container');
-        const headerStatus = document.getElementById('header-status');
-
-        if (!mainContent) return;
-
-        const isItinerary = state.activeTab === 'Itinerary';
-        if (dateScrollerContainer) dateScrollerContainer.classList.toggle('hidden', !isItinerary);
-        if (!isItinerary && headerStatus) headerStatus.classList.add('hidden');
-
-        const views = {
-            Itinerary: () => renderItineraryView(state.selectedDayId),
-            flights: renderFlightsView,
-            manhole: renderDriveView,
-            map: renderMapView,
-            notes: renderNotesView
+            ],
+            hotels: [
+                {
+                    name: "アパホテル〈浅草駅前〉",
+                    engName: "APA Hotel Asakusa Ekimae",
+                    stars: 3,
+                    dates: "10/25入住~10/31退房 (6晚)",
+                    location: "東京都台東區駒形1-12-16 (淺草站步行約1分)",
+                    features: ["特色", "近淺草車站", "交通便利", "周邊機能極佳"],
+                    note: "位於淺草站前核心區域。周邊美食、藥妝店與景點林立，前往晴空塔、上野及各大東京景點極為便捷。",
+                    image: "APA Hotel Asakusa Ekimae.jpg",
+                    mapUrl: "https://maps.app.goo.gl/RJSYMwgrqAbPBMLFA"
+                }
+            ],
+            mapLinks: [
+                {
+                    category: "卡片",
+                    icon: "credit-card",
+                    links: [
+                        { title: "マンホールカード（東京都）", url: "https://cardhunter.jp/list/7mDwYYN74PSGP9EX70onu885N7wg/pref/13" },
+                        { title: "マンホールカード官網", url: "https://www.gk-p.jp/mhcard/" },
+                        { title: "マンホールカード地圖", url: "https://ekikaramanhole.whitebeach.org/ext/manholecard/map/?t=map" }
+                    ]
+                },
+                {
+                    category: "地點",
+                    icon: "map-pin",
+                    links: [
+                        { title: "Pokémon Center TOKYO DX (日本橋)", url: "https://maps.app.goo.gl/aGk5WjS1zHRzgFVH6" },
+                        { title: "Pokémon Center SKYTREE TOWN(晴空塔店)", url: "https://maps.app.goo.gl/DBZDcw2iYewJk2k1A" },
+                        { title: "Pokémon Center SHIBUYA(澀谷店)", url: "https://maps.app.goo.gl/N6tVqryYmYk1tTBK9" },
+                        { title: "Pokémon Center MEGA TOKYO(池袋店)", url: "https://maps.app.goo.gl/uLmWiEBhe3s3wfzJA" },
+                        { title: "Pokémon Center YOKOHAMA(橫濱店)", url: "https://maps.app.goo.gl/cWUer8NbQDnHrFZb6" }
+                    ]
+                },
+                {
+                    category: "交通",
+                    icon: "bus",
+                    links: [
+                        { title: "東京地鐵乘車券 (Tokyo Subway Ticket)", url: "https://www.tokyometro.jp/tcn/ticket/travel/" },
+                        { title: "JR 東日本鐵路周遊券", url: "https://www.jreast.co.jp/multi/zh-CHT/" },
+                        { title: "小田急江之島·鎌倉周遊券", url: "https://www.odakyu.jp/tc/passes/enoshima_kamakura/" },
+                        { title: "東武日光周遊券", url: "https://www.tobu.co.jp/tcn/ticket/nikko/city/" }
+                    ]
+                },
+                {
+                    category: "機場",
+                    icon: "plane",
+                    links: [
+                        { title: "成田國際機場官方網站", url: "https://www.narita-airport.jp/ch2/" },
+                        { title: "Skyliner 京成電鐵時刻表", url: "https://www.keisei.co.jp/keisei/tetudou/skyliner/tc/" }
+                    ]
+                },
+                {
+                    category: "其他",
+                    icon: "ellipsis",
+                    links: [
+                        { title: "紀念幣地圖", url: "https://www.stampmedal.com/map.htm" },
+                        { title: "coinlocker地圖", url: "https://coinlocker.click/" }
+                    ]
+                }
+            ],
+            notes: [
+                {
+                    title: "東京地鐵站點標示",
+                    image: "tokyometro.jpg"
+                }
+            ]
         };
 
-        mainContent.innerHTML = (views[state.activeTab] || views.Itinerary)();
-        mainContent.scrollTop = 0;
-        lucide.createIcons();
-    }
+        const ITEM_STYLES = {
+            shop: { icon: 'shopping-bag', color: 'text-yellow-500', border: 'border-l-yellow-500' },
+            visit: { icon: 'camera', color: 'text-emerald-500', border: 'border-l-emerald-500' },
+            shrine: { emoji: true, color: 'text-stone-800', border: 'border-l-rose-600' },
+            ticket: { icon: 'ticket', color: 'text-indigo-600', border: 'border-l-indigo-600' }
+        };
 
-    window.addEventListener('DOMContentLoaded', () => {
-        initTheme();
-        renderDateScroller();
-        renderBottomNav();
-        checkPwaStatus();
-    });
-</script>
+        const WEATHER_ICONS = {
+            sunny: { name: 'sun', class: 'text-orange-500' },
+            cloudy: { name: 'cloud', class: 'text-gray-500' }
+        };
+
+        const DRIVE_NOTICES = [
+            { title: "右駕左行", text: "日本車輛為右駕，請務必靠左行駛。口訣：「左轉小彎、右轉大彎」。" },
+            { title: "行人優先", text: "斑馬線若有行人準備過馬路，車輛「絕對必須」完全停止讓行。" },
+            { title: "止まれ (Stop)", text: "看到倒三角形的「止まれ」標誌，車輪必須「完全停止」運轉。" },
+            { title: "右轉禮讓", text: "右轉（跨越對向車道）時，必須禮讓直行車與左轉車。" }
+        ];
+
+        const TRAFFIC_SIGNS = [
+            { title: "一時停止", desc: "務必完全煞停", svg: `<svg viewBox="0 0 100 90" class="w-14 h-14 mx-auto"><polygon points="50,85 5,10 95,10" fill="#e53e3e"/><text x="50" y="38" fill="white" font-size="15" font-weight="bold" text-anchor="middle">止まれ</text><text x="50" y="58" fill="white" font-size="13" font-weight="bold" text-anchor="middle">STOP</text></svg>` },
+            { title: "徐行", desc: "減速慢行", svg: `<svg viewBox="0 0 100 90" class="w-14 h-14 mx-auto"><polygon points="50,85 5,10 95,10" fill="#e53e3e"/><polygon points="50,75 12,15 88,15" fill="white"/><text x="50" y="36" fill="#e53e3e" font-size="15" font-weight="bold" text-anchor="middle">徐行</text><text x="50" y="52" fill="#e53e3e" font-size="11" font-weight="bold" text-anchor="middle">SLOW</text></svg>` },
+            { title: "車輛進入禁止", desc: "禁止駛入", svg: `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><circle cx="50" cy="50" r="45" fill="#e53e3e"/><rect x="15" y="42" width="70" height="16" fill="white" rx="2"/></svg>` },
+            { title: "最高速度", desc: "限制最高時速", svg: `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><circle cx="50" cy="50" r="45" fill="white" stroke="#e53e3e" stroke-width="10"/><text x="50" y="62" fill="#3182ce" font-size="40" font-weight="900" font-family="sans-serif" text-anchor="middle">50</text></svg>` },
+            { title: "單行道", desc: "依箭頭方向", svg: `<svg viewBox="0 0 120 70" class="w-16 h-12 mx-auto"><rect x="2" y="5" width="116" height="60" fill="#1d4ed8" rx="4"/><path d="M 110 20 L 45 20 L 45 10 L 10 35 L 45 60 L 45 50 L 110 50 Z" fill="white"/><text x="65" y="40" fill="#1d4ed8" font-size="12" font-weight="bold" text-anchor="middle">一方通行</text></svg>` },
+            { title: "駐車禁止", desc: "禁止停車", svg: `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><circle cx="50" cy="50" r="45" fill="#3182ce" stroke="#e53e3e" stroke-width="10"/><line x1="20" y1="20" x2="80" y2="80" stroke="#e53e3e" stroke-width="10"/></svg>` },
+            { title: "禁止迴轉", desc: "禁止 U-Turn", svg: `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><circle cx="50" cy="50" r="45" fill="white" stroke="#e53e3e" stroke-width="8"/><path d="M 35 65 L 35 45 A 15 15 0 0 1 65 45 L 65 55 M 58 50 L 65 58 L 72 50" fill="none" stroke="#3182ce" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><line x1="20" y1="20" x2="80" y2="80" stroke="#e53e3e" stroke-width="8"/></svg>` },
+            { title: "指定方向", desc: "僅能直行/轉彎", svg: `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><circle cx="50" cy="50" r="46" fill="#1d4ed8" stroke="white" stroke-width="2"/><path d="M 45 78 L 45 36 L 36 44 L 50 20 L 64 44 L 55 36 L 55 78 Z" fill="white"/><path d="M 48 52 C 38 52 32 46 32 38 L 22 38 L 38 22 L 38 32 C 38 32 48 38 48 52 Z" fill="white"/></svg>` },
+            { title: "駐停車禁止", desc: "禁止臨停", svg: `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><circle cx="50" cy="50" r="45" fill="#3182ce" stroke="#e53e3e" stroke-width="10"/><line x1="20" y1="20" x2="80" y2="80" stroke="#e53e3e" stroke-width="10"/><line x1="80" y1="20" x2="20" y2="80" stroke="#e53e3e" stroke-width="10"/></svg>` },
+            { title: "禁止超車", desc: "禁止超車", svg: `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><circle cx="50" cy="50" r="45" fill="white" stroke="#e53e3e" stroke-width="8"/><text x="50" y="42" fill="#3182ce" font-size="18" font-weight="bold" text-anchor="middle">追越</text><text x="50" y="68" fill="#3182ce" font-size="18" font-weight="bold" text-anchor="middle">禁止</text></svg>` }
+        ];
+
+        const ROAD_MARKINGS = [
+            { title: "白色虛線", desc: "可變換車道", lineStyle: `<div class="w-full h-12 bg-stone-600 rounded flex items-center justify-center px-2"><div class="w-full h-0 border-b-2 border-dashed border-white"></div></div>` },
+            { title: "白色實線", desc: "可變換車道 (注意安全)", lineStyle: `<div class="w-full h-12 bg-stone-600 rounded flex items-center justify-center px-2"><div class="w-full h-1 bg-white"></div></div>` },
+            { title: "橘黃色實線", desc: "🚫 禁止變換車道", lineStyle: `<div class="w-full h-12 bg-stone-600 rounded flex items-center justify-center px-2"><div class="w-full h-1 bg-amber-500"></div></div>` },
+            { title: "雙橘實線", desc: "⚠️ 嚴禁跨越/迴轉", lineStyle: `<div class="w-full h-12 bg-stone-600 rounded flex flex-col items-center justify-center gap-1 px-2"><div class="w-full h-0.5 bg-amber-500"></div><div class="w-full h-0.5 bg-amber-500"></div></div>` },
+            { title: "停車格：輕", desc: "🟡 輕自動車專用", lineStyle: `<div class="w-full h-12 bg-stone-600 rounded flex items-center justify-center"><div class="border-2 border-amber-400 text-amber-400 font-bold text-xs px-2 py-0.5 rounded">輕</div></div>` }
+        ];
+
+        const NAV_TABS = [
+            { id: 'Itinerary', label: '行程', icon: 'calendar', color: 'text-amber-600' },
+            { id: 'flights', label: '航班/住宿', icon: 'plane' },
+            { id: 'manhole', label: '自駕須知', icon: 'circle-alert' },
+            { id: 'map', label: '地圖', icon: 'map', color: 'text-emerald-600' },
+            { id: 'notes', label: '備註', icon: 'notebook-pen', color: 'text-pink-600' }
+        ];
+
+        const state = {
+            activeTab: 'Itinerary',
+            selectedDayId: 'day1'
+        };
+
+        function getDeletedItems() {
+            try { return JSON.parse(localStorage.getItem('deleted_itinerary_items') || '[]'); }
+            catch (e) { return []; }
+        }
+
+        function toggleDeleteItem(itemId) {
+            const deleted = getDeletedItems();
+            const index = deleted.indexOf(itemId);
+            if (index > -1) deleted.splice(index, 1);
+            else deleted.push(itemId);
+            localStorage.setItem('deleted_itinerary_items', JSON.stringify(deleted));
+            updateView();
+        }
+
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeIcon();
+            const meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', isDark ? '#121212' : '#d6d3d1');
+        }
+
+        function updateThemeIcon() {
+            const btn = document.getElementById('dark-mode-toggle');
+            if (btn) {
+                const isDark = document.documentElement.classList.contains('dark');
+                btn.innerHTML = isDark 
+                    ? `<i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>` 
+                    : `<i data-lucide="moon" class="w-4 h-4 text-stone-600"></i>`;
+                lucide.createIcons();
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const isDark = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            document.documentElement.classList.toggle('dark', isDark);
+            const meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', isDark ? '#121212' : '#d6d3d1');
+            updateThemeIcon();
+        }
+
+        const getGoogleMapUrl = name => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}`;
+        const getIcon = (name, classes = "", size = 24) => `<i data-lucide="${name}" class="${classes}" width="${size}" height="${size}"></i>`;
+
+        const renderWeatherIcon = type => {
+            const icon = WEATHER_ICONS[type] || WEATHER_ICONS.sunny;
+            return getIcon(icon.name, `w-5 h-5 ${icon.class}`);
+        };
+
+        function checkPwaStatus() {
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+                                 (window.navigator.standalone === true) ||
+                                 document.referrer.includes('android-app://');
+
+            const showApp = DEV_PREVIEW_MODE || isStandalone;
+            const pwaScreen = document.getElementById('pwa-prompt-screen');
+            const mainAppScreen = document.getElementById('main-app-container');
+
+            if (pwaScreen) pwaScreen.classList.toggle('hidden', showApp);
+            if (mainAppScreen) mainAppScreen.classList.toggle('hidden', !showApp);
+
+            if (showApp) updateView();
+            lucide.createIcons();
+        }
+
+        function switchGuideTab(os) {
+            const isIos = os === 'ios';
+            const activeClass = "flex-1 py-2 sm:py-2.5 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 transition-all bg-white text-indigo-950 font-bold shadow-sm";
+            const inactiveClass = "flex-1 py-2 sm:py-2.5 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 transition-all text-stone-500 hover:text-stone-800";
+
+            document.getElementById('tab-ios').className = isIos ? activeClass : inactiveClass;
+            document.getElementById('tab-android').className = isIos ? inactiveClass : activeClass;
+            document.getElementById('guide-ios').classList.toggle('hidden', !isIos);
+            document.getElementById('guide-android').classList.toggle('hidden', isIos);
+            lucide.createIcons();
+        }
+
+        /* ==========================================================================
+           1. 行程 (Itinerary) 相關函式與渲染
+           ========================================================================== */
+        function renderItineraryItem(item, itemId, isDeleted) {
+            if (item.type === 'ticket') {
+                const s = ITEM_STYLES.ticket;
+                return `
+                <div class="flex items-center gap-4 p-4 bg-white/95 backdrop-blur-sm rounded-lg border-l-4 shadow-sm mb-3 ${s.border} active:bg-stone-50 transition-all ${isDeleted ? 'opacity-50 grayscale bg-stone-100/70' : ''}">
+                    <div class="flex items-center justify-center min-w-[50px]">
+                        <div class="p-1.5 rounded-full bg-stone-50 ${s.color}">${getIcon(s.icon, "", 18)}</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-stone-800 text-lg leading-tight select-text ${isDeleted ? 'line-through decoration-red-500 decoration-2 text-stone-400' : ''}">${item.title}</h3>
+                    </div>
+                    <button onclick="toggleDeleteItem('${itemId}')" class="p-2 ${isDeleted ? 'bg-amber-100 text-amber-700 hover:bg-amber-200' : 'bg-red-50 text-red-500 hover:bg-red-100'} rounded-full active:scale-95 shrink-0 transition-colors" title="${isDeleted ? '復原行程' : '刪除行程'}">
+                        ${getIcon(isDeleted ? 'rotate-ccw' : 'trash-2', "", 18)}
+                    </button>
+                </div>`;
+            }
+
+            let iconName = 'map-pin', iconColor = "text-stone-400", borderColor = "border-stone-200", isEmoji = false;
+            const s = ITEM_STYLES[item.type];
+
+            if (s) {
+                if (s.emoji) isEmoji = true; else iconName = s.icon;
+                iconColor = s.color; borderColor = s.border;
+            } else if (item.type === 'transport') {
+                const t = item.title;
+                if (t.includes("JX846") || t.includes("JX847")) {
+                    iconName = 'plane'; iconColor = "text-amber-600"; borderColor = "border-l-amber-600";
+                } else if (item.mode === 'car' || t.includes("租車") || t.includes("前往")) {
+                    iconName = 'car'; iconColor = "text-lime-600"; borderColor = "border-l-lime-600";
+                } else if (t.includes("公車") || t.includes("巴士")) {
+                    iconName = 'bus'; iconColor = "text-teal-600"; borderColor = "border-l-teal-600";
+                } else {
+                    iconName = 'train-front'; iconColor = "text-indigo-400"; borderColor = "border-l-indigo-400";
+                }
+            }
+
+            const isCollection = item.tag === "收集";
+            if (isCollection) { 
+                iconName = 'star'; iconColor = "text-amber-500"; borderColor = "border-l-amber-500"; 
+            }
+
+            const destinationUrl = item.mapUrl || getGoogleMapUrl(item.title);
+
+            return `
+            <div class="flex gap-4 p-4 bg-white/95 backdrop-blur-sm rounded-lg border-l-4 shadow-sm mb-3 ${borderColor} active:bg-stone-50 transition-all ${isDeleted ? 'opacity-50 grayscale bg-stone-100/70' : ''}">
+                <div class="flex flex-col items-center min-w-[50px]">
+                    ${item.time ? `<span class="text-sm font-bold text-stone-600 font-mono ${isDeleted ? 'line-through text-stone-400' : ''}">${item.time}</span>` : ''}
+                    <div class="mt-2 p-1.5 rounded-full bg-stone-50 ${iconColor}">
+                        ${isEmoji ? '<span class="text-lg leading-none">⛩️</span>' : getIcon(iconName, "", 18)}
+                    </div>
+                    ${isCollection ? '<span class="text-[9px] text-amber-600 font-bold mt-1">GET!</span>' : ''}
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-start justify-between">
+                        <h3 class="font-bold text-stone-800 text-lg leading-tight w-[calc(100%-110px)] sm:w-[calc(100%-150px)] select-text ${isDeleted ? 'line-through decoration-red-500 decoration-2 text-stone-400' : ''}">${item.title}</h3>
+                        <div class="flex gap-1.5 shrink-0 items-center"> 
+                            ${item.bookingUrl ? `<a href="${item.bookingUrl}" target="_blank" class="p-2 bg-red-50 text-red-600 rounded-full active:scale-95 shrink-0" title="資訊網站">${getIcon('circle-alert', "", 18)}</a>` : ''}
+                            ${item.stampUrl ? `<a href="${item.stampUrl}" target="_blank" class="p-2 bg-rose-50 text-rose-600 rounded-full active:scale-95 shrink-0" title="紀念章網址">${getIcon('stamp', "", 18)}</a>` : ''}
+                            ${item.weatherUrl ? `<a href="${item.weatherUrl}" target="_blank" class="p-2 bg-sky-50 text-sky-600 rounded-full active:scale-95 shrink-0" title="天氣資訊">${getIcon('cloud-sun', "", 18)}</a>` : ''}
+                            ${item.routeUrl ? `<a href="${item.routeUrl}" target="_blank" class="p-2 bg-emerald-50 text-emerald-600 rounded-full active:scale-95 shrink-0" title="路線導航">${getIcon('route', "", 18)}</a>` : ''}
+                            <a href="${destinationUrl}" target="_blank" class="p-2 bg-blue-50 text-blue-600 rounded-full active:scale-95 shrink-0" title="地圖導航">${getIcon('navigation', "", 18)}</a>
+                            <button onclick="toggleDeleteItem('${itemId}')" class="p-2 ${isDeleted ? 'bg-amber-100 text-amber-700 hover:bg-amber-200' : 'bg-red-50 text-red-500 hover:bg-red-100'} rounded-full active:scale-95 shrink-0 transition-colors" title="${isDeleted ? '復原行程' : '刪除行程'}">
+                                ${getIcon(isDeleted ? 'rotate-ccw' : 'trash-2', "", 18)}
+                            </button>
+                        </div>
+                    </div>
+                    ${item.tag ? `<div class="mt-1"><span class="text-[10px] px-2 py-0.5 rounded-full border font-medium mr-2 ${isCollection ? "border-amber-400 text-amber-600 bg-amber-50" : "border-stone-300 text-stone-500"} ${isDeleted ? 'line-through opacity-70' : ''}">${item.tag}</span></div>` : ''}
+                    ${item.highlight ? `<div class="mt-2 inline-block px-3 py-1 bg-red-50 text-red-600 text-xs rounded-md font-bold select-text ${isDeleted ? 'line-through opacity-70' : ''}">★ ${item.highlight}</div>` : ''}
+                    ${item.note ? `<div class="mt-2 text-sm text-stone-600 leading-relaxed bg-stone-50 p-3 rounded border border-stone-100 whitespace-pre-line select-text ${isDeleted ? 'line-through opacity-60' : ''}">${item.note}</div>` : ''}
+                </div>
+            </div>`;
+        }
+
+        function renderItineraryView(dayId) {
+            const currentDayData = TRIP_DATA.Itinerary.find(d => d.id === dayId);
+            if (!currentDayData) return '';
+
+            const headerStatus = document.getElementById('header-status');
+            headerStatus.innerHTML = `${renderWeatherIcon(currentDayData.weather)}<span class="text-sm font-bold text-stone-600">${currentDayData.temp}</span>`;
+            headerStatus.classList.remove('hidden');
+
+            const hasItems = currentDayData.items && currentDayData.items.length > 0;
+            const deletedSet = new Set(getDeletedItems());
+
+            return `
+                <div class="animate-fade-in-up pb-6">
+                    <div class="flex items-center justify-between mb-4 px-1">
+                        <h2 class="text-xl font-bold text-stone-800">Day ${dayId.replace('day', '')} <span class="ml-2 text-xl font-bold text-stone-800">${currentDayData.location}</span></h2>
+                    </div>
+                    ${hasItems 
+                        ? currentDayData.items.map((item, index) => {
+                            const itemId = `${dayId}_${index}`;
+                            return renderItineraryItem(item, itemId, deletedSet.has(itemId));
+                          }).join('')
+                        : '<div class="text-center py-10 text-stone-500 bg-white/50 rounded-xl border border-stone-200">此日期暫無行程資料</div>'
+                    }
+                    ${FOOTER_HTML}
+                </div>`;
+        }
+
+        function renderDateScroller() {
+            const scroller = document.getElementById('date-scroller');
+            if (!scroller) return;
+
+            scroller.innerHTML = TRIP_DATA.Itinerary.map(day => {
+                const isActive = day.id === state.selectedDayId;
+                return `
+                    <button onclick="selectDay('${day.id}')" class="snap-center shrink-0 flex flex-col items-center justify-center w-16 h-16 rounded-2xl transition-all duration-200 ${
+                        isActive 
+                            ? 'bg-indigo-900 text-white font-bold shadow-md scale-105 border-2 border-indigo-900' 
+                            : 'bg-white/80 text-stone-600 border border-stone-200/80 hover:bg-stone-100'
+                    }">
+                        <span class="text-[10px] uppercase font-semibold opacity-80">${day.date}</span>
+                        <span class="text-lg font-black leading-tight">${day.dayOfWeek}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectDay(dayId) {
+            state.selectedDayId = dayId;
+            renderDateScroller();
+            updateView();
+        }
+
+        /* ==========================================================================
+           2. 航班/住宿 相關函式與渲染
+           ========================================================================== */
+        function renderFlightsView() {
+            const flightsHtml = TRIP_DATA.flights.map(flight => `
+                <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-stone-200 overflow-hidden p-5 mb-4">
+                    <div class="flex items-center justify-between mb-4 border-b border-stone-100 pb-3">
+                        <span class="text-xs font-bold px-2 py-1 rounded ${flight.type === 'Departure' ? 'bg-indigo-100 text-indigo-700' : 'bg-orange-100 text-orange-700'}">${flight.type === 'Departure' ? '去程' : '回程'}</span>
+                        <span class="font-mono font-bold text-stone-500">${flight.date}</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-3">
+                            <div class="text-3xl font-black text-stone-800">${flight.code}</div>
+                            ${flight.flightUrl ? `<a href="${flight.flightUrl}" target="_blank" class="p-1.5 bg-sky-50 text-sky-600 rounded-full active:scale-95 transition-transform">${getIcon('circle-alert', "", 18)}</a>` : ''}
+                        </div>
+                        <div class="text-stone-300 rotate-45">${getIcon('plane', "", 24)}</div>
+                    </div>
+                    <div class="text-sm font-medium text-stone-600 mb-4">${flight.airline} • ${flight.class}</div>
+                    <div class="bg-stone-50 p-4 rounded-lg text-center border border-stone-100">
+                        <div class="text-lg font-bold text-stone-800 mb-1">${flight.route}</div>
+                        <div class="text-xs text-stone-500">${flight.terminal} • ${flight.duration} • ${flight.aircraft}</div>
+                    </div>
+                </div>`).join('');
+
+            const hotelsHtml = TRIP_DATA.hotels.map(hotel => `
+                <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-stone-200 overflow-hidden p-0 mb-4">
+                    <div class="h-60 bg-stone-200 relative overflow-hidden">
+                        ${hotel.image ? `<img src="${hotel.image}" alt="${hotel.name}" class="w-full h-full object-cover">` : `<div class="w-full h-full bg-gradient-to-r from-stone-200 to-stone-300 flex items-center justify-center">${getIcon('bed-double', "text-white w-10 h-10 opacity-50")}</div>`}
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start mb-1">
+                            <div>
+                                <h3 class="text-lg font-bold text-stone-800 leading-tight">${hotel.name}</h3>
+                                ${hotel.stars ? `
+                                    <div class="flex items-center gap-1 text-amber-500 text-xs font-bold mt-1">
+                                        <div class="flex items-center gap-0.5">
+                                            ${Array(hotel.stars).fill(getIcon('star', "fill-amber-400 text-amber-400", 14)).join('')}
+                                        </div>
+                                        <span class="text-stone-500 font-medium ml-1">${hotel.stars} 星級飯店</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <span class="text-xs bg-stone-100 text-stone-600 px-2 py-1 rounded font-medium whitespace-nowrap shrink-0 ml-2">${hotel.dates}</span>
+                        </div>
+                        <p class="text-xs text-stone-400 mb-4 font-mono">${hotel.engName}</p>
+                        <div class="flex items-start gap-2 mb-4 text-sm text-stone-600">${getIcon('map-pin', "mt-0.5 text-stone-400 shrink-0", 16)}<span>${hotel.location}</span></div>
+                        <div class="flex flex-wrap gap-2 mb-4">${hotel.features.map(f => `<span class="text-[10px] px-2 py-1 bg-indigo-50 text-indigo-600 rounded">${f}</span>`).join('')}</div>
+                        <div class="bg-amber-50 p-3 rounded text-sm text-amber-800 border border-amber-100 flex gap-2 leading-relaxed">${getIcon('info', "shrink-0 mt-0.5", 16)}<span>${hotel.note}</span></div>
+                        <a href="${hotel.mapUrl || getGoogleMapUrl(hotel.name)}" target="_blank" class="mt-4 block w-full py-3 bg-stone-800 text-white text-center rounded-lg text-sm font-bold active:bg-stone-900 transition active:scale-[0.98]">導航至飯店</a>
+                    </div>
+                </div>`).join('');
+
+            return `<div class="space-y-4 animate-fade-in pb-6"><h2 class="text-xl font-bold text-stone-800 px-1">航班資訊</h2>${flightsHtml}<h2 class="text-xl font-bold text-stone-800 px-1 mt-8 pt-4 border-t border-stone-300/50">住宿資訊</h2>${hotelsHtml}${FOOTER_HTML}</div>`;
+        }
+
+        /* ==========================================================================
+           3. 自駕需知 相關函式與渲染
+           ========================================================================== */
+        function renderDriveView() {
+            return `
+                <div class="animate-fade-in space-y-6 pb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-stone-800 px-1 mb-3 flex items-center gap-2">
+                            ${getIcon('car', "text-emerald-600", 24)} 日本自駕注意事項
+                        </h2>
+                        <div class="mb-4 rounded-xl overflow-hidden shadow-sm border border-stone-200">
+                            <img src="car.jpg" alt="日本自駕注意事項" class="w-full h-auto object-cover" onerror="this.parentElement.style.display='none';"/>
+                        </div>
+                        <div class="space-y-3">
+                            ${DRIVE_NOTICES.map(item => `
+                                <div class="bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-stone-200 border-l-4 border-l-lime-500 flex gap-3">
+                                    <div class="mt-0.5 text-amber-500 shrink-0">${getIcon('triangle-alert', "", 20)}</div>
+                                    <div>
+                                        <h3 class="font-bold text-stone-800 text-base mb-1">${item.title}</h3>
+                                        <p class="text-sm text-stone-600 leading-relaxed">${item.text}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-xl font-bold text-stone-800 px-1 mb-3 flex items-center gap-2">
+                            <span class="w-1.5 h-5 bg-stone-500 rounded-full inline-block"></span> 常用交通號誌
+                        </h2>
+                        <div class="grid grid-cols-2 gap-3">
+                            ${TRAFFIC_SIGNS.map(sign => `
+                                <div class="bg-white/95 backdrop-blur-sm p-3.5 rounded-xl shadow-sm border border-stone-200 text-center flex flex-col items-center justify-between">
+                                    <div class="my-2 flex items-center justify-center h-16 w-full">${sign.svg}</div>
+                                    <div class="mt-1">
+                                        <div class="font-bold text-stone-800 text-sm">${sign.title}</div>
+                                        <div class="text-[11px] text-stone-500 mt-0.5">${sign.desc}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-xl font-bold text-stone-800 px-1 mb-3 flex items-center gap-2">
+                            <span class="w-1.5 h-5 bg-amber-500 rounded-full inline-block"></span> 道路標線辨識
+                        </h2>
+                        <div class="space-y-2.5">
+                            ${ROAD_MARKINGS.map(m => `
+                                <div class="bg-white/95 backdrop-blur-sm p-3 rounded-xl shadow-sm border border-stone-200 flex items-center gap-3">
+                                    <div class="w-28 shrink-0">${m.lineStyle}</div>
+                                    <div>
+                                        <div class="font-bold text-stone-800 text-sm">${m.title}</div>
+                                        <div class="text-xs text-stone-500 mt-0.5">${m.desc}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-xl font-bold text-stone-800 px-1 mb-3 flex items-center gap-2">
+                            <span class="w-1.5 h-5 bg-sky-500 rounded-full inline-block"></span> 加油站使用指南
+                        </h2>
+                        <div class="space-y-3">
+                            <div class="bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-stone-200 border-l-4 border-l-sky-500">
+                                <h3 class="font-bold text-sky-800 text-base mb-3 flex items-center gap-2">
+                                    ${getIcon('droplets', "text-sky-500", 18)} 自助加油完整步驟 (Self)
+                                </h3>
+                                <ol class="space-y-3 text-sm text-stone-700">
+                                    <li class="bg-stone-50 p-2.5 rounded-lg border border-stone-100">
+                                        <div class="font-bold text-stone-800 mb-0.5 flex items-center gap-1.5">
+                                            <span class="w-5 h-5 rounded-full bg-sky-500 text-white text-xs flex items-center justify-center font-mono shrink-0">1</span>
+                                            停妥車輛與開啟油箱蓋
+                                        </div>
+                                        <p class="text-xs text-stone-600 pl-6">認明「セルフ」招牌駛入車道。熄火、拉手煞車，並按下車內開關打開油箱外蓋。</p>
+                                    </li>
+                                    <li class="bg-stone-50 p-2.5 rounded-lg border border-stone-100">
+                                        <div class="font-bold text-stone-800 mb-0.5 flex items-center gap-1.5">
+                                            <span class="w-5 h-5 rounded-full bg-sky-500 text-white text-xs flex items-center justify-center font-mono shrink-0">2</span>
+                                            螢幕選擇付款方式
+                                        </div>
+                                        <p class="text-xs text-stone-600 pl-6">於螢幕選擇支付管道：現金 (現金) 或 信用卡 (クレジットカード)。若付現請先投入紙鈔。</p>
+                                    </li>
+                                    <li class="bg-stone-50 p-2.5 rounded-lg border border-stone-100">
+                                        <div class="font-bold text-stone-800 mb-0.5 flex items-center gap-1.5">
+                                            <span class="w-5 h-5 rounded-full bg-sky-500 text-white text-xs flex items-center justify-center font-mono shrink-0">3</span>
+                                            選擇油種與加油量
+                                        </div>
+                                        <p class="text-xs text-stone-600 pl-6">選擇「レギュラー (紅色 Regular)」，加滿請點選「滿タン (Mantan)」，或指定金額/公升數。</p>
+                                    </li>
+                                    <li class="bg-stone-50 p-2.5 rounded-lg border border-stone-100">
+                                        <div class="font-bold text-stone-800 mb-0.5 flex items-center gap-1.5">
+                                            <span class="w-5 h-5 rounded-full bg-sky-500 text-white text-xs flex items-center justify-center font-mono shrink-0">4</span>
+                                            消除人體靜電
+                                        </div>
+                                        <p class="text-xs text-stone-600 pl-6">取槍前，務必用手掌觸摸機台上的靜電消除貼紙 (靜電気除去シート)。</p>
+                                    </li>
+                                    <li class="bg-stone-50 p-2.5 rounded-lg border border-stone-100">
+                                        <div class="font-bold text-stone-800 mb-0.5 flex items-center gap-1.5">
+                                            <span class="w-5 h-5 rounded-full bg-sky-500 text-white text-xs flex items-center justify-center font-mono shrink-0">5</span>
+                                            取槍加油至跳停
+                                        </div>
+                                        <p class="text-xs text-stone-600 pl-6">取紅色油槍插入油箱，扣緊扳機開始加油，直到油槍「跳停 (咔嗒聲)」即停止。放回油槍並鎖緊油箱蓋。</p>
+                                    </li>
+                                    <li class="bg-stone-50 p-2.5 rounded-lg border border-stone-100">
+                                        <div class="font-bold text-stone-800 mb-0.5 flex items-center gap-1.5">
+                                            <span class="w-5 h-5 rounded-full bg-sky-500 text-white text-xs flex items-center justify-center font-mono shrink-0">6</span>
+                                            取回收據與精算找零
+                                        </div>
+                                        <p class="text-xs text-stone-600 pl-6">領取收據。若有找零，持收據條碼至旁邊的「精算機 (精算機)」掃描領取找零現金。</p>
+                                    </li>
+                                </ol>
+                            </div>
+
+                            <div class="bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-stone-200 border-l-4 border-l-sky-500">
+                                <h3 class="font-bold text-sky-800 text-base mb-2 flex items-center gap-2">
+                                    ${getIcon('droplets', "text-sky-500", 18)} 人工加油
+                                </h3>
+                                <ul class="space-y-1.5 text-sm text-stone-700 list-disc list-inside pl-1 leading-relaxed">
+                                    <li>駛入車道。</li>
+                                    <li>說：「Regular, Mantan (紅色加滿)」。</li>
+                                    <li>車內付款。</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-stone-200 border-l-4 border-l-red-500">
+                                <h3 class="font-bold text-red-800 text-base mb-2 flex items-center gap-2">
+                                    ${getIcon('fuel', "text-red-500", 18)} 油種辨識
+                                </h3>
+                                <ul class="space-y-2 text-sm text-stone-700 font-medium pl-1">
+                                    <li class="flex items-center gap-2">
+                                        <span class="w-3.5 h-3.5 rounded-full bg-red-500 shrink-0 inline-block"></span>
+                                        <span><strong class="text-stone-800">紅色 Regular</strong>：一般汽油。</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <span class="w-3.5 h-3.5 rounded-full bg-amber-400 shrink-0 inline-block"></span>
+                                        <span><strong class="text-stone-800">黃色 High Octane</strong>：高辛烷值汽油。</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-500 shrink-0 inline-block"></span>
+                                        <span><strong class="text-stone-800">綠色 Diesel</strong>：柴油/輕油。</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    ${FOOTER_HTML}
+                </div>`;
+        }
+
+        /* ==========================================================================
+           4. 地圖 相關函式與渲染
+           ========================================================================== */
+        function renderMapView() {
+            const mapHtml = TRIP_DATA.mapLinks.map(cat => `
+                <div class="bg-white/95 backdrop-blur-sm rounded-xl p-5 shadow-sm border border-stone-200 mb-4">
+                    <h3 class="text-xl font-black text-stone-800 mb-3.5 flex items-center gap-2.5 border-b border-stone-100 pb-2.5">
+                        ${getIcon(cat.icon || 'map-pin', "text-emerald-600", 24)}
+                        <span class="text-xl font-bold tracking-tight">${cat.category}</span>
+                    </h3>
+                    <div class="space-y-2.5">
+                        ${cat.links.map(link => `
+                            <a href="${link.url}" target="_blank" class="flex items-center justify-between p-3.5 rounded-xl bg-stone-50 hover:bg-stone-100 border border-stone-200/80 transition-all active:scale-[0.99] group">
+                                <span class="font-bold text-stone-800 text-base sm:text-lg leading-snug group-hover:text-indigo-600 transition-colors">${link.title}</span>${getIcon('external-link', "text-stone-400 group-hover:text-indigo-600 shrink-0 ml-2", 20)}
+                            </a>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            return `
+                <div class="space-y-4 animate-fade-in pb-6">
+                    <h2 class="text-2xl font-black text-stone-800 px-1 mb-2 flex items-center gap-2.5">
+                        ${getIcon('map', "text-emerald-600", 26)} 
+                        <span>地圖與實用連結</span>
+                    </h2>
+                    ${mapHtml}
+                    ${FOOTER_HTML}
+                </div>`;
+        }
+
+        /* ==========================================================================
+           5. 備註 相關函式與渲染
+           ========================================================================== */
+        function renderNotesView() {
+            const hasNotes = TRIP_DATA.notes && TRIP_DATA.notes.length > 0;
+            const notesHtml = hasNotes ? TRIP_DATA.notes.map(note => `
+                <div class="bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-stone-200 mb-4 overflow-hidden">
+                    <h3 class="text-base font-bold text-stone-800 mb-3 flex items-center gap-2">
+                        ${getIcon('image', "text-pink-600", 18)} ${note.title}
+                    </h3>
+                    <div class="rounded-lg overflow-hidden border border-stone-100 bg-stone-100">
+                        <img src="${note.image}" alt="${note.title}" class="w-full h-auto object-contain" onerror="this.src='https://placehold.co/600x400/e2e8f0/475569?text=${encodeURIComponent(note.title)}';"/>
+                    </div>
+                </div>
+            `).join('') : '<div class="text-center py-10 text-stone-500 bg-white/50 rounded-xl border border-stone-200">暫無備註內容</div>';
+
+            return `<div class="space-y-4 animate-fade-in pb-6"><h2 class="text-xl font-bold text-stone-800 px-1 mb-3">備註頁面</h2>${notesHtml}${FOOTER_HTML}</div>`;
+        }
+
+        function renderBottomNav() {
+            const nav = document.getElementById('bottom-nav');
+            if (!nav) return;
+
+            nav.innerHTML = NAV_TABS.map(tab => {
+                const isActive = tab.id === state.activeTab;
+                const colorClass = isActive ? (tab.color || 'text-indigo-900') : 'text-stone-400 hover:text-stone-600';
+                return `
+                    <button onclick="switchTab('${tab.id}')" class="flex flex-col items-center justify-center py-1 px-3 min-w-[64px] transition-all ${colorClass}">
+                        <div class="p-1 rounded-xl ${isActive ? 'bg-stone-100/80' : ''}">
+                            ${getIcon(tab.icon, "w-5 h-5")}
+                        </div>
+                        <span class="text-[11px] mt-0.5 font-bold whitespace-nowrap">${tab.label}</span>
+                    </button>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function switchTab(tabId) {
+            state.activeTab = tabId;
+            renderBottomNav();
+            updateView();
+        }
+
+        function updateView() {
+            const mainContent = document.getElementById('main-content');
+            const dateScrollerContainer = document.getElementById('date-scroller-container');
+            const headerStatus = document.getElementById('header-status');
+
+            if (!mainContent) return;
+
+            const isItinerary = state.activeTab === 'Itinerary';
+            if (dateScrollerContainer) dateScrollerContainer.classList.toggle('hidden', !isItinerary);
+            if (!isItinerary && headerStatus) headerStatus.classList.add('hidden');
+
+            const views = {
+                Itinerary: () => renderItineraryView(state.selectedDayId),
+                flights: renderFlightsView,
+                manhole: renderDriveView,
+                map: renderMapView,
+                notes: renderNotesView
+            };
+
+            mainContent.innerHTML = (views[state.activeTab] || views.Itinerary)();
+            mainContent.scrollTop = 0;
+            lucide.createIcons();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            renderDateScroller();
+            renderBottomNav();
+            checkPwaStatus();
+        });
+    </script>
 </body>
 </html>
