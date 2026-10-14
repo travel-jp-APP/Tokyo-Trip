@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Tokyo Trip"> 
 <meta name="theme-color" content="#d6d3d1">
 
@@ -103,9 +103,9 @@
 
 <div id="main-app-container" class="w-full h-[100dvh] flex flex-col md:max-w-md md:mx-auto shadow-2xl overflow-hidden relative select-none bg-stone-300">
     
-    <!-- Background Layer -->
-    <div class="fixed inset-0 z-0 pointer-events-none md:max-w-md md:mx-auto flex items-center justify-center overflow-hidden">
-        <img src="Tokyo.jpg" alt="Background" class="opacity-95"/>
+    <!-- Background Layer (Tokyo.jpg full screen coverage) -->
+    <div class="absolute inset-0 z-0 pointer-events-none w-full h-full overflow-hidden flex items-center justify-center">
+        <img src="Tokyo.jpg" alt="Background" class="w-full h-full object-cover opacity-95"/>
         <div class="absolute inset-0 bg-stone-300/85 backdrop-blur-[2px]"></div>
     </div>
 
