@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Tokyo Trip"> 
 <meta name="application-name" content="Tokyo Trip">
@@ -243,6 +244,17 @@
             if (['IMG', 'VIDEO'].includes(e.target.tagName)) e.preventDefault();
         }, false);
     });
+
+    // 防止 iOS PWA 獨立模式下點擊連結跳出至 Safari 瀏覽器網頁模式
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('a');
+        if (link && link.href) {
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+            if (isStandalone && !link.getAttribute('target') && link.href.startsWith('http') && !link.href.includes(window.location.hostname)) {
+                link.setAttribute('target', '_blank');
+            }
+        }
+    }, true);
 
     const TRIP_DATA = {
         flights: [
