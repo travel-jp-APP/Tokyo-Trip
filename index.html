@@ -65,7 +65,7 @@
     }
 
     html.dark, html.dark body { background-color: #121212 !important; color: #f5f5f4 !important; }
-    html.dark #main-app-container { background-color: #18181b !important; color: #f5f5f4 !important; }
+    html.dark #main-app-container, html.dark #pwa-prompt-screen { background-color: #18181b !important; color: #f5f5f4 !important; }
     html.dark .bg-stone-300\/85 { background-color: rgba(24, 24, 27, 0.88) !important; }
 
     html.dark .bg-white\/80, html.dark .bg-white\/90, html.dark .bg-white\/95, html.dark .bg-white {
@@ -103,104 +103,90 @@
 </head>
 <body>
 
+    <!-- 強制加入主畫面引導頁面 (對應 NEW 內 PWA 寫法) -->
+    <div id="pwa-prompt-screen" class="hidden fixed inset-0 z-[9999] bg-[#f2f2f4] overflow-y-auto h-full w-full flex flex-col justify-between items-center p-4 sm:p-6 pt-safe pb-safe select-none">
+        <div class="w-full max-w-sm flex-1 flex flex-col items-center justify-center space-y-3 sm:space-y-5 my-auto py-2">
+            
+            <div class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-rose-100/90 text-rose-600 text-xs sm:text-sm font-semibold shadow-sm border border-rose-200/60 shrink-0">
+                <i data-lucide="shield-alert" class="w-4 h-4 text-rose-500 shrink-0"></i>
+                <span>請先加入主畫面才能瀏覽</span>
+            </div>
+
+            <div class="text-center space-y-1.5 shrink-0">
+                <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-stone-900">TOKYO TRIP 2026</h1>
+                <p class="text-xs text-stone-500 leading-relaxed max-w-[280px] mx-auto font-medium">
+                    請將此行程網頁加入手機主畫面，以獲取最佳 App 瀏覽體驗
+                </p>
+            </div>
+
+            <div class="w-full bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm border border-stone-200/60 flex flex-col items-center shrink">
+                <div class="w-36 h-36 xs:w-44 xs:h-44 sm:w-48 sm:h-48 rounded-2xl sm:rounded-3xl bg-stone-100/80 overflow-hidden flex items-center justify-center p-2 border border-stone-200/50 shadow-inner mb-3 sm:mb-4">
+                    <img src="Tokyo.jpg" alt="Tokyo Trip 主畫面圖示" class="w-full h-full object-contain rounded-xl sm:rounded-2xl" onerror="this.src='https://placehold.co/200x200/e2e8f0/475569?text=Tokyo+Trip';"/>
+                </div>
+                <span class="text-stone-700 font-semibold text-xs sm:text-sm">Tokyo Trip 主畫面圖示</span>
+            </div>
+
+            <div class="w-full bg-stone-200/80 p-1 rounded-2xl flex text-xs sm:text-sm font-medium shrink-0">
+                <button id="tab-ios" onclick="switchGuideTab('ios')" class="flex-1 py-2 sm:py-2.5 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 transition-all bg-white text-indigo-950 font-bold shadow-sm">
+                    <i data-lucide="apple" class="w-4 h-4 mb-0.5"></i>
+                    <span>iPhone (Safari)</span>
+                </button>
+                <button id="tab-android" onclick="switchGuideTab('android')" class="flex-1 py-2 sm:py-2.5 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 transition-all text-stone-500 hover:text-stone-800">
+                    <i data-lucide="smartphone" class="w-4 h-4"></i>
+                    <span>Android (Chrome)</span>
+                </button>
+            </div>
+
+            <div id="guide-ios" class="w-full bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-stone-200/60 space-y-3 sm:space-y-4 text-stone-700 text-xs sm:text-sm shrink-0">
+                <div class="flex items-center gap-3">
+                    <span class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0">1</span>
+                    <p class="leading-snug">點擊 Safari 下方工具列的「 <span class="font-bold text-stone-900">分享</span> 」圖示 <i data-lucide="share" class="inline w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600 ml-0.5 -mt-0.5"></i></p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0">2</span>
+                    <p class="leading-snug">在選單中選取「 <span class="font-bold text-stone-900">加入主畫面</span> 」 <i data-lucide="plus-square" class="inline w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600 ml-0.5 -mt-0.5"></i></p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0">3</span>
+                    <p class="leading-snug">點擊右上角「 <span class="font-bold text-stone-900">新增</span> 」，即可從桌面開啟瀏覽！</p>
+                </div>
+            </div>
+
+            <div id="guide-android" class="hidden w-full bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-stone-200/60 space-y-3 sm:space-y-4 text-stone-700 text-xs sm:text-sm shrink-0">
+                <div class="flex items-center gap-3">
+                    <span class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0">1</span>
+                    <p class="leading-snug">點擊 Chrome 右上角的「 <span class="font-bold text-stone-900">三點選單</span> 」圖示 <i data-lucide="more-vertical" class="inline w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600 ml-0.5 -mt-0.5"></i></p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0">2</span>
+                    <p class="leading-snug">選取「 <span class="font-bold text-stone-900">加到主畫面</span> 」或「 安裝應用程式 」</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0">3</span>
+                    <p class="leading-snug">點擊「 <span class="font-bold text-stone-900">新增</span> 」，即可從桌面專屬 Icon 開啟！</p>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-center gap-1.5 text-indigo-400 font-medium text-xs sm:text-sm pt-1 shrink-0">
+                <i data-lucide="arrow-down" class="w-4 h-4 animate-bounce"></i>
+                <span>請依上述步驟將網頁加入主畫面</span>
+            </div>
+        </div>
+
+        <div class="w-full text-center pt-2 pb-1 shrink-0">
+            <div class="inline-flex items-baseline gap-2">
+                <span class="text-stone-400 text-xs sm:text-sm font-normal">Created by</span>
+                <span class="text-2xl sm:text-3xl text-stone-600" style="font-family: 'Dancing Script', cursive;">Wen</span>
+            </div>
+        </div>
+    </div>
+
 <div id="main-app-container" class="w-full h-[100dvh] flex flex-col md:max-w-md md:mx-auto shadow-2xl overflow-hidden relative select-none bg-stone-300">
     
     <!-- Background Layer (Tokyo.jpg full screen coverage) -->
     <div class="absolute inset-0 z-0 pointer-events-none w-full h-full overflow-hidden flex items-center justify-center">
         <img src="Tokyo.jpg" alt="Background" class="w-full h-full object-cover opacity-95"/>
         <div class="absolute inset-0 bg-stone-300/85 backdrop-blur-[2px]"></div>
-    </div>
-
-    <div id="pwa-lock-overlay" class="absolute inset-0 z-[100] bg-stone-100 dark:bg-stone-900 flex flex-col overflow-y-auto no-scrollbar p-6 items-center text-center hidden">
-        <div class="w-full max-w-sm my-auto space-y-5 py-6">
-            <!-- Warning Pill -->
-            <div class="inline-flex items-center gap-2 bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 px-4 py-2 rounded-full text-sm font-bold shadow-sm border border-red-200 dark:border-red-900">
-                <i data-lucide="shield-alert" class="w-4 h-4"></i>
-                <span>請先加入主畫面才能瀏覽</span>
-            </div>
-
-            <!-- Title -->
-            <div>
-                <h1 class="text-2xl font-black tracking-tight text-stone-900 dark:text-stone-100">TOKYO TRIP 2026</h1>
-                <p class="text-xs text-stone-500 dark:text-stone-400 mt-1.5 leading-relaxed">請將此行程網頁加入手機主畫面，以獲取最佳 App 瀏覽體驗</p>
-            </div>
-
-            <!-- App Icon Card -->
-            <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 flex flex-col items-center">
-                <div class="w-28 h-28 aspect-square rounded-2xl overflow-hidden shadow-md mb-3 border border-stone-100 dark:border-stone-700 bg-stone-200 flex items-center justify-center">
-                    <img src="Tokyo.jpg" alt="Tokyo Trip Icon" class="w-full h-full object-cover"/>
-                </div>
-                <span class="text-sm font-bold text-stone-800 dark:text-stone-200">Tokyo Trip 主畫面圖示</span>
-            </div>
-
-            <!-- Platform Switcher Buttons -->
-            <div class="grid grid-cols-2 gap-2 bg-stone-200 dark:bg-stone-800 p-1.5 rounded-xl border border-stone-300 dark:border-stone-700">
-                <button onclick="switchPlatformGuide('ios')" id="btn-guide-ios" class="py-2.5 px-3 rounded-lg text-xs font-bold transition-all bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm flex items-center justify-center gap-1.5">
-                    <i data-lucide="apple" class="w-4 h-4"></i> iPhone (Safari)
-                </button>
-                <button onclick="switchPlatformGuide('android')" id="btn-guide-android" class="py-2.5 px-3 rounded-lg text-xs font-bold transition-all text-stone-600 dark:text-stone-400 flex items-center justify-center gap-1.5">
-                    <i data-lucide="smartphone" class="w-4 h-4"></i> Android (Chrome)
-                </button>
-            </div>
-
-            <!-- iOS Guide Steps -->
-            <div id="guide-steps-ios" class="bg-white dark:bg-stone-800 p-5 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 text-left space-y-3.5">
-                <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">1</div>
-                    <div class="text-xs text-stone-700 dark:text-stone-300 leading-normal flex-1 flex items-center flex-wrap gap-1">
-                        <span>點擊 Safari 下方工具列的「分享」圖示</span>
-                        <span class="inline-flex p-1 bg-stone-100 dark:bg-stone-700 rounded text-blue-600 dark:text-blue-400"><i data-lucide="share" class="w-3.5 h-3.5"></i></span>
-                    </div>
-                </div>
-                <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">2</div>
-                    <div class="text-xs text-stone-700 dark:text-stone-300 leading-normal flex-1 flex items-center flex-wrap gap-1">
-                        <span>在選單中選取「加入主畫面」</span>
-                        <span class="inline-flex p-1 bg-stone-100 dark:bg-stone-700 rounded text-blue-600 dark:text-blue-400"><i data-lucide="plus-square" class="w-3.5 h-3.5"></i></span>
-                    </div>
-                </div>
-                <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">3</div>
-                    <div class="text-xs text-stone-700 dark:text-stone-300 leading-normal flex-1">
-                        <span>點擊右上角「新增」，即可從桌面開啟瀏覽！</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Android Guide Steps -->
-            <div id="guide-steps-android" class="bg-white dark:bg-stone-800 p-5 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 text-left space-y-3.5 hidden">
-                <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">1</div>
-                    <div class="text-xs text-stone-700 dark:text-stone-300 leading-normal flex-1 flex items-center flex-wrap gap-1">
-                        <span>點擊 Chrome 右上角選單</span>
-                        <span class="inline-flex p-1 bg-stone-100 dark:bg-stone-700 rounded text-stone-700 dark:text-stone-300"><i data-lucide="more-vertical" class="w-3.5 h-3.5"></i></span>
-                    </div>
-                </div>
-                <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">2</div>
-                    <div class="text-xs text-stone-700 dark:text-stone-300 leading-normal flex-1">
-                        <span>選取「加到主畫面」或「安裝應用程式」</span>
-                    </div>
-                </div>
-                <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">3</div>
-                    <div class="text-xs text-stone-700 dark:text-stone-300 leading-normal flex-1">
-                        <span>點擊「安裝」或「新增」，即可從桌面開啟瀏覽！</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-xs font-medium text-indigo-700 dark:text-indigo-400 flex items-center justify-center gap-1.5 pt-1">
-                <i data-lucide="arrow-down" class="w-3.5 h-3.5 animate-bounce"></i>
-                <span>請依上述步驟將網頁加入主畫面</span>
-            </div>
-
-            <!-- Footer Signature -->
-            <div class="pt-8 pb-8 text-center text-stone-500 dark:text-stone-400 text-sm tracking-wide flex items-baseline justify-center gap-1.5">
-                <span>Created by</span>
-                <span class="signature-wen text-stone-800 dark:text-stone-200 text-3xl font-bold">Wen</span>
-            </div>
-        </div>
     </div>
 
     <div class="shrink-0 bg-white/80 backdrop-blur-md border-b border-stone-200/50 shadow-sm z-50">
@@ -234,27 +220,24 @@
 <script>
     // =========================================================================
     // 💡 PWA 強制加入主畫面開關 (Toggle Switch for PWA Mode)
-    // 當 PWA_ENFORCE_ENABLED 設為 true 時：若非在 PWA 獨立模式開啟，將強制顯示加入主畫面引導頁。
-    // 當 PWA_ENFORCE_ENABLED 設為 false 時：可在任何一般瀏覽器中正常瀏覽。
+    // - DEV_PREVIEW_MODE = true  (ON)  : 開啟測試預覽模式 (關閉強制加入主畫面選單)
+    // - DEV_PREVIEW_MODE = false (OFF) : 正式模式 (必須加入手機「主畫面」才能開啟瀏覽)
     // =========================================================================
-    const PWA_ENFORCE_ENABLED = true; 
+    const DEV_PREVIEW_MODE = true; // 開發預覽模式 ON/OFF
+
+    // 頁尾簽名元件
+    const FOOTER_HTML = `
+        <div class="pt-8 pb-8 text-center text-stone-500 dark:text-stone-400 text-sm tracking-wide flex items-baseline justify-center gap-1.5">
+            <span>Created by</span>
+            <span class="signature-wen text-stone-800 dark:text-stone-200 text-3xl font-bold">Wen</span>
+        </div>
+    `;
 
     ['contextmenu', 'dragstart'].forEach(evt => {
         document.addEventListener(evt, e => {
             if (['IMG', 'VIDEO'].includes(e.target.tagName)) e.preventDefault();
         }, false);
     });
-
-    // 防止 iOS PWA 獨立模式下點擊連結跳出至 Safari 瀏覽器網頁模式
-    document.addEventListener('click', function(e) {
-        const link = e.target.closest('a');
-        if (link && link.href) {
-            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-            if (isStandalone && !link.getAttribute('target') && link.href.startsWith('http') && !link.href.includes(window.location.hostname)) {
-                link.setAttribute('target', '_blank');
-            }
-        }
-    }, true);
 
     const TRIP_DATA = {
         flights: [
@@ -435,42 +418,31 @@
         selectedDayId: 'day1'
     };
 
-    function checkPwaMode() {
-        if (!PWA_ENFORCE_ENABLED) return;
-        
-        const ua = window.navigator.userAgent || window.navigator.vendor || window.opera;
-        const isIOS = /iP(ad|hone|od)/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-        
-        const overlay = document.getElementById('pwa-lock-overlay');
-        if (overlay) {
-            if (isIOS && !isStandalone) {
-                overlay.classList.remove('hidden');
-            } else if (!isStandalone) {
-                overlay.classList.remove('hidden');
-            } else {
-                overlay.classList.add('hidden');
-            }
-        }
+    function checkPwaStatus() {
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+                             (window.navigator.standalone === true) ||
+                             document.referrer.includes('android-app://');
+
+        const showApp = DEV_PREVIEW_MODE || isStandalone;
+        const pwaScreen = document.getElementById('pwa-prompt-screen');
+        const mainAppScreen = document.getElementById('main-app-container');
+
+        if (pwaScreen) pwaScreen.classList.toggle('hidden', showApp);
+        if (mainAppScreen) mainAppScreen.classList.toggle('hidden', !showApp);
+
+        if (showApp) updateView();
+        lucide.createIcons();
     }
 
-    function switchPlatformGuide(platform) {
-        const btnIos = document.getElementById('btn-guide-ios');
-        const btnAndroid = document.getElementById('btn-guide-android');
-        const stepsIos = document.getElementById('guide-steps-ios');
-        const stepsAndroid = document.getElementById('guide-steps-android');
+    function switchGuideTab(os) {
+        const isIos = os === 'ios';
+        const activeClass = "flex-1 py-2 sm:py-2.5 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 transition-all bg-white text-indigo-950 font-bold shadow-sm";
+        const inactiveClass = "flex-1 py-2 sm:py-2.5 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 transition-all text-stone-500 hover:text-stone-800";
 
-        if (platform === 'ios') {
-            btnIos.className = "py-2.5 px-3 rounded-lg text-xs font-bold transition-all bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm flex items-center justify-center gap-1.5";
-            btnAndroid.className = "py-2.5 px-3 rounded-lg text-xs font-bold transition-all text-stone-600 dark:text-stone-400 flex items-center justify-center gap-1.5";
-            stepsIos.classList.remove('hidden');
-            stepsAndroid.classList.add('hidden');
-        } else {
-            btnAndroid.className = "py-2.5 px-3 rounded-lg text-xs font-bold transition-all bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-sm flex items-center justify-center gap-1.5";
-            btnIos.className = "py-2.5 px-3 rounded-lg text-xs font-bold transition-all text-stone-600 dark:text-stone-400 flex items-center justify-center gap-1.5";
-            stepsAndroid.classList.remove('hidden');
-            stepsIos.classList.add('hidden');
-        }
+        document.getElementById('tab-ios').className = isIos ? activeClass : inactiveClass;
+        document.getElementById('tab-android').className = isIos ? inactiveClass : activeClass;
+        document.getElementById('guide-ios').classList.toggle('hidden', !isIos);
+        document.getElementById('guide-android').classList.toggle('hidden', isIos);
         lucide.createIcons();
     }
 
@@ -523,15 +495,6 @@
         const icon = WEATHER_ICONS[type] || WEATHER_ICONS.sunny;
         return getIcon(icon.name, `w-5 h-5 ${icon.class}`);
     };
-
-    function renderFooterSignature() {
-        return `
-            <div class="pt-8 pb-8 text-center text-stone-500 dark:text-stone-400 text-sm tracking-wide flex items-baseline justify-center gap-1.5">
-                <span>Created by</span>
-                <span class="signature-wen text-stone-800 dark:text-stone-200 text-3xl font-bold">Wen</span>
-            </div>
-        `;
-    }
 
     function renderItineraryItem(item, itemId, isDeleted) {
         if (item.type === 'ticket') {
@@ -604,7 +567,7 @@
         const deletedSet = new Set(getDeletedItems());
 
         return `
-            <div class="animate-fade-in-up">
+            <div class="animate-fade-in-up pb-6">
                 <div class="flex items-center justify-between mb-4 px-1">
                     <h2 class="text-xl font-bold text-stone-800">Day ${dayId.replace('day', '')} <span class="ml-2 text-xl font-bold text-stone-800">${currentDayData.location}</span></h2>
                 </div>
@@ -615,7 +578,7 @@
                       }).join('')
                     : '<div class="text-center py-10 text-stone-500 bg-white/50 rounded-xl border border-stone-200">此日期暫無行程資料</div>'
                 }
-                ${renderFooterSignature()}
+                ${FOOTER_HTML}
             </div>`;
     }
 
@@ -668,12 +631,12 @@
                 </div>
             </div>`).join('');
 
-        return `<div class="space-y-4 animate-fade-in"><h2 class="text-xl font-bold text-stone-800 px-1">航班資訊</h2>${flightsHtml}<h2 class="text-xl font-bold text-stone-800 px-1 mt-8 pt-4 border-t border-stone-300/50">住宿資訊</h2>${hotelsHtml}${renderFooterSignature()}</div>`;
+        return `<div class="space-y-4 animate-fade-in pb-6"><h2 class="text-xl font-bold text-stone-800 px-1">航班資訊</h2>${flightsHtml}<h2 class="text-xl font-bold text-stone-800 px-1 mt-8 pt-4 border-t border-stone-300/50">住宿資訊</h2>${hotelsHtml}${FOOTER_HTML}</div>`;
     }
 
     function renderDriveView() {
         return `
-            <div class="animate-fade-in space-y-6">
+            <div class="animate-fade-in space-y-6 pb-6">
                 <div>
                     <h2 class="text-xl font-bold text-stone-800 px-1 mb-3 flex items-center gap-2">
                         ${getIcon('car', "text-emerald-600", 24)} 日本自駕注意事項
@@ -727,7 +690,7 @@
                         `).join('')}
                     </div>
                 </div>
-                ${renderFooterSignature()}
+                ${FOOTER_HTML}
             </div>`;
     }
 
@@ -749,19 +712,19 @@
         `).join('');
 
         return `
-            <div class="space-y-4 animate-fade-in">
+            <div class="space-y-4 animate-fade-in pb-6">
                 <h2 class="text-2xl font-black text-stone-800 px-1 mb-2 flex items-center gap-2.5">
                     ${getIcon('map', "text-emerald-600", 26)} 
                     <span>地圖與實用連結</span>
                 </h2>
                 ${mapHtml}
-                ${renderFooterSignature()}
+                ${FOOTER_HTML}
             </div>`;
     }
 
     function renderNotesView() {
         return `
-            <div class="space-y-4 animate-fade-in">
+            <div class="space-y-4 animate-fade-in pb-6">
                 <h2 class="text-xl font-bold text-stone-800 px-1 mb-3">備註</h2>
                 
                 <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-stone-200 overflow-hidden mb-4">
@@ -774,7 +737,7 @@
                 </div>
 
                 <div class="text-center py-6 text-stone-500 bg-white/50 rounded-xl border border-stone-200">暫無其他備註內容</div>
-                ${renderFooterSignature()}
+                ${FOOTER_HTML}
             </div>`;
     }
 
@@ -854,10 +817,9 @@
 
     window.addEventListener('DOMContentLoaded', () => {
         initTheme();
-        checkPwaMode();
         renderDateScroller();
         renderBottomNav();
-        updateView();
+        checkPwaStatus();
     });
 </script>
 </body>
