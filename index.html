@@ -424,10 +424,21 @@
 
     function checkPwaMode() {
         if (!PWA_ENFORCE_ENABLED) return;
+        
+        // 偵測是否為 iOS 裝置 (包含 iOS 15 等版本)
+        const ua = window.navigator.userAgent || window.navigator.vendor || window.opera;
+        const isIOS = /iP(ad|hone|od)/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        
+        // 檢查是否為獨立 PWA 模式 (加入主畫面後開啟)
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        
         const overlay = document.getElementById('pwa-lock-overlay');
         if (overlay) {
-            if (!isStandalone) {
+            // 若為 iOS 裝置 (包含 iOS 15) 且未透過主畫面 PWA 模式開啟，強制顯示鎖定引導頁
+            if (isIOS && !isStandalone) {
+                overlay.classList.remove('hidden');
+            } else if (!isStandalone) {
+                // 其他非 iOS 裝置若非 standalone 也強制顯示
                 overlay.classList.remove('hidden');
             } else {
                 overlay.classList.add('hidden');
