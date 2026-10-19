@@ -143,7 +143,7 @@ html.dark .bg-indigo-50 { background-color: rgba(49, 46, 129, 0.3) !important; c
 <span class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0">3</span>
 <p class="leading-snug">點擊「 <span class="font-bold text-stone-900">新增</span> 」，即可從桌面專屬 Icon 開啟！</p>
 </div>
-<!-- Android Chrome 專屬一鍵安裝按鈕 (修復安卓無法安裝問題) -->
+<!-- Android Chrome 專屬一鍵安裝按鈕 -->
 <button id="android-install-btn" onclick="installPwa()" class="hidden w-full mt-2 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm">
 <i data-lucide="download" class="w-4 h-4"></i>
 <span>立即安裝應用程式</span>
@@ -196,13 +196,7 @@ html.dark .bg-indigo-50 { background-color: rgba(49, 46, 129, 0.3) !important; c
 </div>
 </div>
 <script>
-/* ==========================================================================
-【開發 / 測試預覽模式與圖片開關設定】
-- DEV_PREVIEW_MODE = true  (ON)  : 開啟測試預覽模式 (關閉強制加入主畫面選單)
-- DEV_PREVIEW_MODE = false (OFF) : 正式模式 (必須加入手機「主畫面」才能開啟瀏覽)
-========================================================================== */
-const DEV_PREVIEW_MODE = false; // 開發預覽模式 ON/OFF
-// Android 系統 Chrome PWA 安裝事件變數與處理函式
+const DEV_PREVIEW_MODE = false;
 let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', (e) => {
 e.preventDefault();
@@ -223,7 +217,6 @@ deferredPrompt = null;
 });
 }
 }
-// 動態生成合法的 manifest Blob URL 供 Android Chrome 正確辨識與安裝
 function initManifest() {
 const manifestData = {
 name: "Tokyo Trip 2026",
@@ -256,65 +249,66 @@ if (['IMG', 'VIDEO'].includes(e.target.tagName)) e.preventDefault();
 });
 const TRIP_DATA = {
 Itinerary: [
-{ id: "day1", date: "10/25", dayOfWeek: "日", location: "淺草 ➔ 晴空塔", weather: "sunny", temp: "20°C", items: [
-{ type: "shrine", title: "淺草寺", mapUrl: "https://maps.app.goo.gl/8BQVM5rRSpQwnJHp7", note: "【特色】東京最古老的寺廟，參拜大雷門與仲見世通。" },
-{ type: "visit", title: "淺草文化觀光中心展望台", mapUrl: "https://maps.app.goo.gl/c7CVXd33e1KEovJZ8", note: "【特色】免費高空展望台，可俯瞰雷門與仲見世通全景。" },
-{ type: "visit", title: "吾妻橋", mapUrl: "https://maps.app.goo.gl/TJpmH8f4wezZE4iz8", note: "【特色】橫跨隅田川的經典地標，欣賞晴空塔與金色啤酒泡泡建築絕佳視角。" },
-{ type: "visit", title: "十間橋", mapUrl: "https://maps.app.goo.gl/vKDWM7M9tfc8ucMA7", note: "【特色】拍攝晴空塔倒影的著名攝影聖地。" },
-{ type: "visit", title: "晴空塔", mapUrl: "https://maps.app.goo.gl/3z5jrjHyA66HRgfQ6", note: "【特色】世界最高自立式電波塔，結合大型購物商圈 Solamachi。" }
+{ id: "day1", date: "10/25", dayOfWeek: "日", location: "淺草 ➔ 押上 ➔ 晴空塔", weather: "sunny", temp: "20°C", items: [
+{ type: "shrine", time: "10:00", title: "淺草寺", mapUrl: "https://maps.app.goo.gl/8BQVM5rRSpQwnJHp7", note: "【營業時間】06:00–17:00 (境內全天開放)\n【特色】東京都內最古老寺廟，巨大雷門紅燈籠與仲見世商店街是東京最具代表性的地標景點。" },
+{ type: "visit", time: "12:00", title: "淺草文化觀光中心展望台", mapUrl: "https://maps.app.goo.gl/c7CVXd33e1KEovJZ8", note: "【營業時間】09:00–20:00\n【特色】隈研吾大師設計建築，8樓免費展望台可完美俯瞰淺草寺全景與東京晴空塔巨構。" },
+{ type: "visit", time: "13:30", title: "吾妻橋", mapUrl: "https://maps.app.goo.gl/TJpmH8f4wezZE4iz8", note: "【特色】橫跨隅田川的經典朱紅色橋樑，是欣賞晴空塔與朝日啤酒金色大樓火焰雕塑的最佳視角。" },
+{ type: "visit", time: "15:00", title: "十間橋", mapUrl: "https://maps.app.goo.gl/vKDWM7M9tfc8ucMA7", note: "【特色】攝影迷聖地！河面倒映出完整的「逆晴空塔」倒影，夕陽與藍調時刻拍攝效果極佳。" },
+{ type: "visit", time: "16:30", title: "晴空塔", mapUrl: "https://maps.app.goo.gl/3z5jrjHyA66HRgfQ6", note: "【營業時間】10:00–21:00\n【特色】高達634公尺的世界第一高塔，展望台俯瞰東京夜景，下方Solamachi索拉町商圈購物美食一次滿足。" }
 ]},
-{ id: "day2", date: "10/26", dayOfWeek: "一", location: "豐洲 ➔ 台場 ➔ 神社 ➔ 東京鐵塔", weather: "sunny", temp: "19°C", items: [
-{ type: "visit", title: "豐洲市場 壽司大", mapUrl: "https://maps.app.goo.gl/HNm26xizuXfGVoVY6", note: "【特色】豐洲市場超人氣排隊名店，品嚐頂級新鮮握壽司。" },
-{ type: "visit", title: "豐洲 千客萬來", mapUrl: "https://maps.app.goo.gl/kG4fbuYHqdqJ62Hb8", note: "【特色】江戶風情美食街與免費足湯溫泉設施。" },
-{ type: "visit", title: "自由女神像", mapUrl: "https://maps.app.goo.gl/AgUP7juh5bZEkW4b8", note: "【特色】台場海濱公園地標，遠眺彩虹大橋與東京灣美景。" },
-{ type: "shop", title: "THE GUNDAM BASE TOKYO ANNEX", mapUrl: "https://maps.app.goo.gl/ETGomipHeDYQE27r6", note: "【特色】鋼彈迷必訪模型基地分館，朝聖限定周邊商品。" },
-{ type: "shrine", title: "小網神社", mapUrl: "https://maps.app.goo.gl/Mv6eg6mfAXVFiPNJA", note: "【特色】東京都內極具靈驗盛名的強運厄除神社。" },
-{ type: "shrine", title: "神田神社", mapUrl: "https://maps.app.goo.gl/oBRwNffLFu1vGGG89", note: "【特色】歷史悠久的東京大社，祈求商業繁盛與勝運。" },
-{ type: "shrine", title: "妙義神社", mapUrl: "https://maps.app.goo.gl/vhxHukW7EiKMt1xRA", note: "【特色】寧靜莊嚴的在地古神社。" },
-{ type: "visit", title: "東京鐵塔", mapUrl: "https://maps.app.goo.gl/99vrEx7TXZKZFhgYA", note: "【特色】經典復古橘白地標，夜景浪漫迷人。" }
+{ id: "day2", date: "10/26", dayOfWeek: "一", location: "豐洲 ➔ 台場 ➔ 日本橋/神田 ➔ 東京鐵塔", weather: "sunny", temp: "19°C", items: [
+{ type: "visit", time: "07:00", title: "豐洲市場 壽司大", mapUrl: "https://maps.app.goo.gl/HNm26xizuXfGVoVY6", note: "【營業時間】06:00–14:00 (週日/國定假日公休)\n【特色】築地移轉至豐洲的最強傳奇壽司店，新鮮頂級板前無菜單握壽司，極致美味值得早起排隊。" },
+{ type: "visit", time: "10:00", title: "豐洲 千客萬來", mapUrl: "https://maps.app.goo.gl/kG4fbuYHqdqJ62Hb8", note: "【營業時間】10:00–22:00 (依各設施而異)\n【特色】江戶時代復古街景主題商場，集合各式日本美食，並設有免費溫泉足湯可放鬆身心。" },
+{ type: "visit", time: "12:30", title: "自由女神像", mapUrl: "https://maps.app.goo.gl/AgUP7juh5bZEkW4b8", note: "【特色】位於台場海濱公園，以東京灣與彩虹大橋為背景的經典地標，隨手拍出充滿異國風情大片。" },
+{ type: "shop", time: "13:30", title: "THE GUNDAM BASE TOKYO ANNEX", mapUrl: "https://maps.app.goo.gl/ETGomipHeDYQE27r6", note: "【營業時間】10:00–21:00\n【特色】鋼彈迷必朝聖聖地！展示限定版模型與限量周邊，搭配戶外巨型獨角獸鋼彈立像。" },
+{ type: "shrine", time: "15:30", title: "小網神社", mapUrl: "https://maps.app.goo.gl/Mv6eg6mfAXVFiPNJA", note: "【營業時間】09:00–17:00\n【特色】東京最強強運與洗錢神社（洗錢弁財天），祈求財運與消災解厄極為靈驗，參拜人潮絡繹不絕。" },
+{ type: "shrine", time: "17:00", title: "神田神社", mapUrl: "https://maps.app.goo.gl/oBRwNffLFu1vGGG89", note: "【營業時間】境內24小時開放 (授與所 09:00–17:00)\n【特色】千年以上歷史的江戶總鎮守，祈求事業順利與勝運，亦是動漫《Love Live!》經典聖地。" },
+{ type: "shrine", time: "18:30", title: "妙義神社", mapUrl: "https://maps.app.goo.gl/vhxHukW7EiKMt1xRA", note: "【營業時間】境內開放\n【特色】豐島區最古老的神社，主祀日本武尊，環境寧靜優雅，以勝運與結緣著稱的歷史古社。" },
+{ type: "visit", time: "20:00", title: "東京鐵塔", mapUrl: "https://maps.app.goo.gl/99vrEx7TXZKZFhgYA", note: "【營業時間】09:00–22:30\n【特色】東京最永恆的浪漫象徵，璀璨夜間點燈地標，展望台能近距離觀賞東京繁華璀璨夜景。" }
 ]},
-{ id: "day3", date: "10/27", dayOfWeek: "二", location: "川越 ➔ 涉谷", weather: "sunny", temp: "21°C", items: [
-{ type: "shrine", title: "冰川神社", mapUrl: "https://maps.app.goo.gl/adghHK9tjVYK2xzt8", note: "【特色】以結緣聞名，著名的鯛魚御神籤與繪馬隧道。" },
-{ type: "visit", title: "菓子屋橫丁", mapUrl: "https://maps.app.goo.gl/ErFHx2jt3NBAcTTV8", note: "【特色】懷舊復古糖果一條街，充滿昭和風情。" },
-{ type: "shop", title: "ちいかわもぐもぐ本舗 川越店", mapUrl: "https://maps.app.goo.gl/Tg8thBTU2Gncr48h6", note: "【特色】吉伊卡哇（Chiikawa）人氣角色專賣店川越分店。" },
-{ type: "visit", title: "藏造老屋街", mapUrl: "https://maps.app.goo.gl/2Skjo41bSJRxoeHe9", note: "【特色】保存完整的江戶時代黑漆瓦屋倉庫群建築。" },
-{ type: "visit", title: "時之鐘", mapUrl: "https://maps.app.goo.gl/KjTF5gwKXwW1vPkY9", note: "【特色】川越最具代表性的古老木造鐘樓地標。" },
-{ type: "shop", title: "星巴克川越店", mapUrl: "https://maps.app.goo.gl/tm9EpCHZiPAGHCm97", note: "【特色】融合川越傳統藏造建築風格的特色星巴克。" },
-{ type: "visit", title: "小川菊鰻魚飯", mapUrl: "https://maps.app.goo.gl/ZBEc6xPafdtT2HXEA", note: "【特色】川越百年老字號排隊鰻魚飯名店。" },
-{ type: "visit", title: "大正浪漫夢通", mapUrl: "https://maps.app.goo.gl/YmQb4QUCSRdHqWgT9", note: "【特色】洋溢大正時期歐風浪漫氛圍的特色街道。" },
-{ type: "visit", title: "Shimano Coffee 大正館", mapUrl: "https://maps.app.goo.gl/czBGnqCmoMNFCUKj6", note: "【特色】充滿復古情調的昭和風情咖啡館。" },
-{ type: "shrine", title: "熊野神社", mapUrl: "https://maps.app.goo.gl/fzLQmcYmpwVaSyWT7", note: "【特色】祈求開運解厄與結緣的靈驗神社。" },
-{ type: "shop", title: "atre丸廣 川越店", mapUrl: "https://maps.app.goo.gl/xnzvcyb6d6tyFyN88", note: "【特色】站前大型購物百貨商場，採買便利。" },
-{ type: "visit", title: "忠犬八公像", mapUrl: "https://maps.app.goo.gl/WYEDXJEq7QPhBmZK8", note: "【特色】澀谷站前知名的忠犬八公銅像會面點。" },
-{ type: "visit", title: "十字路口", mapUrl: "https://maps.app.goo.gl/3G8KuVXtRSzqL41C6", note: "【特色】世界著名的超大型萬頭鑽動十字路口。" },
-{ type: "visit", title: "Shibuya Sky", mapUrl: "https://maps.app.goo.gl/Q8iiJrfXStTt2w3FA", note: "【特色】涉谷頂級露天展望台，俯瞰東京無敵夜景。" }
+{ id: "day3", date: "10/27", dayOfWeek: "二", location: "川越古街 ➔ 澀谷時尚地標", weather: "sunny", temp: "21°C", items: [
+{ type: "shrine", time: "09:00", title: "冰川神社", mapUrl: "https://maps.app.goo.gl/adghHK9tjVYK2xzt8", note: "【營業時間】09:00–17:00\n【特色】川越超人氣結緣神社，以可愛的「鯛魚籤」釣籤與夏日風鈴迴廊聞名，祈求良緣非常靈驗。" },
+{ type: "visit", time: "10:30", title: "菓子屋橫丁", mapUrl: "https://maps.app.goo.gl/ErFHx2jt3NBAcTTV8", note: "【特色】充滿懷舊昭和風情的傳統點心街，鋪滿石板小路，販售各式傳統懷舊古早味糖果與仙貝。" },
+{ type: "shop", time: "11:15", title: "ちいかわもぐもぐ本舗 川越店", mapUrl: "https://maps.app.goo.gl/Tg8thBTU2Gncr48h6", note: "【營業時間】10:00–18:00\n【特色】吉伊卡哇（Chiikawa）主題限定店，充滿限定款和風周邊商品與傳統糕點包裝。" },
+{ type: "visit", time: "12:00", title: "藏造老屋街", mapUrl: "https://maps.app.goo.gl/2Skjo41bSJRxoeHe9", note: "【特色】保留完整黑漆牆傳統防火「藏造」建築物，彷彿穿越回江戶時代，漫步拍照極具韻味。" },
+{ type: "visit", time: "12:30", title: "時之鐘", mapUrl: "https://maps.app.goo.gl/KjTF5gwKXwW1vPkY9", note: "【特色】川越的小江戶象徵地標，這座木造鐘樓每日定時敲鐘4次（06:00/12:00/15:00/18:00）。" },
+{ type: "visit", time: "13:00", title: "星巴克川越店", mapUrl: "https://maps.app.goo.gl/tm9EpCHZiPAGHCm97", note: "【營業時間】08:00–22:00\n【特色】融入小江戶藏造風格的特色概念店，傳統木造外觀與日式庭園造景，絕佳休憩拍照點。" },
+{ type: "visit", time: "13:45", title: "小川菊鰻魚飯", mapUrl: "https://maps.app.goo.gl/ZBEc6xPafdtT2HXEA", note: "【營業時間】11:00–14:00 / 16:30–19:30 (週四公休)\n【特色】川越百年鰻魚老店，傳承秘製醬汁搭配備長炭現烤蒲燒鰻魚，肉質綿密香氣四溢。" },
+{ type: "visit", time: "15:00", title: "大正浪漫夢通", mapUrl: "https://maps.app.goo.gl/YmQb4QUCSRdHqWgT9", note: "【特色】洋溢著大正時期復古歐風與日式融合的商圈，街道寬廣舒適，擁有許多老式喫茶店。" },
+{ type: "visit", time: "15:30", title: "Shimano Coffee 大正館", mapUrl: "https://maps.app.goo.gl/czBGnqCmoMNFCUKj6", note: "【營業時間】08:00–19:00\n【特色】復古懷舊咖啡館，充滿濃厚大正浪漫氛圍，提供手沖虹吸咖啡與招牌鬆餅甜點。" },
+{ type: "shrine", time: "16:30", title: "熊野神社", mapUrl: "https://maps.app.goo.gl/fzLQmcYmpwVaSyWT7", note: "【營業時間】09:00–17:00\n【特色】以開運、解厄與求財著稱，參道鋪有健康穴道指壓石步道，並可洗錢祈求財運。" },
+{ type: "shop", time: "17:15", title: "atre丸廣 川越店", mapUrl: "https://maps.app.goo.gl/xnzvcyb6d6tyFyN88", note: "【營業時間】10:00–21:00\n【特色】川越車站直結的高效百貨商場，集結流行服飾、雜貨美食，搭車回東京前採買首選。" },
+{ type: "visit", time: "19:00", title: "忠犬八公像", mapUrl: "https://maps.app.goo.gl/WYEDXJEq7QPhBmZK8", note: "【特色】澀谷地標與全東京最著名的會面地點，紀念感人忠犬故事，地鐵澀谷站出口即達。" },
+{ type: "visit", time: "19:15", title: "十字路口", mapUrl: "https://maps.app.goo.gl/3G8KuVXtRSzqL41C6", note: "【特色】世界上最繁忙的人行十字路口，綠燈時數千人同時交錯通行，展現東京極致都市活力。" },
+{ type: "visit", time: "20:00", title: "Shibuya Sky", mapUrl: "https://maps.app.goo.gl/Q8iiJrfXStTt2w3FA", note: "【營業時間】10:00–22:30\n【特色】高約229公尺露天高空展望台，360度無死角絕美俯瞰東京夜景與澀谷十字路口。" }
 ]},
-{ id: "day4", date: "10/28", dayOfWeek: "三", location: "鎌倉 ➔ 江之島", weather: "sunny", temp: "18°C", items: [
-{ type: "shrine", title: "鶴岡八幡宮", mapUrl: "https://maps.app.goo.gl/SHXsTtq4j1SLJuRa9", note: "【特色】鎌倉最重要的歷史古神社與文化心臟。" },
-{ type: "visit", title: "小町通", mapUrl: "https://maps.app.goo.gl/rig51bRg9CBETjZS6", note: "【特色】熱鬧繁華的鎌倉特色商店街與美食小吃街。" },
-{ type: "visit", title: "長谷寺", mapUrl: "https://maps.app.goo.gl/RKAhfdoLkbVX9B3y8", note: "【特色】以巨大十一面觀音像與絕美繡球花海聞名的寺院。" },
-{ type: "visit", title: "高德院／鎌倉大佛", mapUrl: "https://maps.app.goo.gl/9G2WzgUC2PgtyftBA", note: "【特色】鎌倉最具代表性的巨大露天青銅國寶大佛。" },
-{ type: "visit", title: "鎌倉高校前", mapUrl: "https://maps.app.goo.gl/8fQ8YSeNwzgzMj5M8", note: "【特色】灌籃高手經典平交道與湘南海岸絕景。" },
-{ type: "visit", title: "江島神社 青銅鳥居", mapUrl: "https://maps.app.goo.gl/MLWMEo8PrRMqtAMRA", note: "【特色】江之島入口處古色古香的青銅大鳥居。" },
-{ type: "shrine", title: "江島神社", mapUrl: "https://maps.app.goo.gl/uRjSFEdoh2rAiSHZ8", note: "【特色】日本三大弁財天之一，祈求財運與好運的島上神社。" }
+{ id: "day4", date: "10/28", dayOfWeek: "三", location: "古都鎌倉 ➔ 湘南海岸 ➔ 江之島", weather: "sunny", temp: "18°C", items: [
+{ type: "shrine", time: "09:00", title: "鶴岡八幡宮", mapUrl: "https://maps.app.goo.gl/SHXsTtq4j1SLJuRa9", note: "【營業時間】06:00–20:30\n【特色】鎌倉最重要的武士精神象徵神社，參道段葛朱紅鳥居極具氣勢，境內優雅大氣。" },
+{ type: "visit", time: "11:00", title: "小町通", mapUrl: "https://maps.app.goo.gl/rig51bRg9CBETjZS6", note: "【特色】連接鎌倉站至八幡宮熱鬧熱門商店街，集合許多地方特色美食小吃、手作雜貨與伴手禮。" },
+{ type: "shrine", time: "13:00", title: "長谷寺", mapUrl: "https://maps.app.goo.gl/RKAhfdoLkbVX9B3y8", note: "【營業時間】08:00–17:00\n【特色】以木造十一面觀音立像與美麗日式庭園聞名，視野極佳，可遠眺由比濱海岸風光。" },
+{ type: "visit", time: "14:15", title: "高德院／鎌倉大佛", mapUrl: "https://maps.app.goo.gl/9G2WzgUC2PgtyftBA", note: "【營業時間】08:00–17:30\n【特色】高達11.3公尺的青銅坐佛國寶，青空下露天座落，是鎌倉最知名的象徵地標建築。" },
+{ type: "visit", time: "15:30", title: "鎌倉高校前", mapUrl: "https://maps.app.goo.gl/8fQ8YSeNwzgzMj5M8", note: "【特色】《灌籃高手》動畫經典片頭平交道場景，江之電通過搭配蔚藍海景，經典動漫打卡聖地。" },
+{ type: "shrine", time: "16:45", title: "江島神社 青銅鳥居", mapUrl: "https://maps.app.goo.gl/MLWMEo8PrRMqtAMRA", note: "【特色】進入江之島參道入口處的市指定文化財古老青銅鳥居，兩側古色古香店家林立。" },
+{ type: "shrine", time: "17:15", title: "江島神社", mapUrl: "https://maps.app.goo.gl/uRjSFEdoh2rAiSHZ8", note: "【營業時間】08:30–17:00 (境內全天開放)\n【特色】奉祀日本三大弁財天之一，由邊津宮、中津宮、奧津宮組成，祈求財運、藝能與海路安全。" }
 ]},
 { id: "day5", date: "10/29", dayOfWeek: "四", location: "富士山一日遊", weather: "sunny", temp: "16°C", items: [
-{ type: "transport", time: "08:00", title: "搭乘富士回遊特急 / 高速巴士前往河口湖", mapUrl: "https://maps.app.goo.gl/kawaguchiko" },
-{ type: "visit", time: "10:15", title: "新倉山淺間公園 (忠靈塔)", mapUrl: "https://maps.app.goo.gl/arakurayama", note: "【特色】登高遠眺忠靈塔與富士山同框的經典日本絕景。" },
-{ type: "visit", time: "13:00", title: "河口湖大石公園 & 羅森河口湖站前店", mapUrl: "https://maps.app.goo.gl/oishi-park", note: "【特色】湖畔漫步賞富士山景，羅森便利商店拍照熱點打卡。" }
+{ type: "transport", time: "07:30", title: "出發前往富士山河口湖", mapUrl: "https://maps.app.goo.gl/kawaguchiko", note: "【交通建議】搭乘富士回遊特急或高速巴士，專車前往山腳下絕景景點。" },
+{ type: "visit", time: "10:00", title: "新倉山淺間公園 (忠靈塔)", mapUrl: "https://maps.app.goo.gl/arakurayama", note: "【特色】登高攀登階梯後俯瞰五重塔與雄偉富士山同框，國際最知名的代表性日本風景。" },
+{ type: "visit", time: "13:00", title: "河口湖大石公園 & 湖畔漫步", mapUrl: "https://maps.app.goo.gl/oishi-park", note: "【特色】河口湖北岸絕佳展望點，四季皆有不同花卉襯託湖光山色與壯麗富士山。" }
 ]},
-{ id: "day6", date: "10/30", dayOfWeek: "五", location: "日光一日遊", weather: "cloudy", temp: "15°C", items: [
-{ type: "ticket", title: "日光周遊券 (Nikko Pass)" },
-{ type: "shrine", time: "09:30", title: "日光東照宮 & 輪王寺", mapUrl: "https://maps.app.goo.gl/toshogu", note: "【營業時間】09:00–16:00\n【特色】世界文化遺產，觀賞極致雕刻「陽明門」、「三猿」與「睡貓」。" },
-{ type: "visit", time: "13:30", title: "中禪寺湖 & 華嚴瀑布", mapUrl: "https://maps.app.goo.gl/kegon", note: "【特色】日本三大名瀑之一，搭乘電梯直達瀑布潭底感受壯麗水勢。" }
+{ id: "day6", date: "10/30", dayOfWeek: "五", location: "日光世界遺産一日遊", weather: "cloudy", temp: "15°C", items: [
+{ type: "ticket", title: "東武日光周遊券 (Nikko Pass)" },
+{ type: "shrine", time: "09:30", title: "日光東照宮 & 輪王寺", mapUrl: "https://maps.app.goo.gl/toshogu", note: "【營業時間】09:00–16:00\n【特色】世界文化遺產，德川家康靈廟，欣賞極致華麗雕刻「陽明門」、「三猿」與「睡貓」。" },
+{ type: "visit", time: "13:30", title: "中禪寺湖 & 華嚴瀑布", mapUrl: "https://maps.app.goo.gl/kegon", note: "【特色】日本三大名瀑之一，搭乘電梯直達97公尺高的瀑布觀景台，感受水勢奔騰壯麗景致。" }
 ]},
-{ id: "day7", date: "10/31", dayOfWeek: "六", location: "成田一日遊 ➔ 台北", weather: "sunny", temp: "19°C", items: [
-{ type: "visit", title: "成田からくり時計", mapUrl: "https://maps.app.goo.gl/fSJopmjXXg9cEBaH7", note: "【特色】成田市區具特色的人偶音樂機械鐘座。" },
-{ type: "visit", title: "成田山表參道", mapUrl: "https://maps.app.goo.gl/HTCYtFrUsvj93Pkr6", note: "【特色】古色古香的參拜老街，沿途鰻魚飯飄香。" },
-{ type: "visit", title: "鰻魚-川豐本店", mapUrl: "https://maps.app.goo.gl/zyDT3vhQw5qh5zNb7", note: "【特色】成田山表參道極具名氣的現烤百年鰻魚飯名店。" },
-{ type: "shrine", title: "成田山新勝寺", mapUrl: "https://maps.app.goo.gl/RCGfUocfVvvqGnEM9", note: "【特色】關東地區首屈一指的千年古剎與參拜勝地。" },
-{ type: "shop", title: "加藤商店 🌠🌠🌠たいやき🌰🌰🌰天津甘栗", mapUrl: "https://maps.app.goo.gl/C2ddMLgB2AqEzFbB9", note: "【特色】美味鯛魚燒與天津甘栗人氣老舖。" },
-{ type: "shop", title: "成田ゆめ牧場 門前店", mapUrl: "https://maps.app.goo.gl/CFWcFx81VAirPrX7A", note: "【特色】品嚐香醇濃郁的牧場鮮乳與冰淇淋。" }
+{ id: "day7", date: "10/31", dayOfWeek: "六", location: "成田表參道 ➔ 成田山新勝寺 ➔ 成田機場", weather: "sunny", temp: "19°C", items: [
+{ type: "visit", time: "10:30", title: "成田からくり時計", mapUrl: "https://maps.app.goo.gl/fSJopmjXXg9cEBaH7", note: "【特色】位於JR成田站前，每逢整點會有歌舞伎人偶搭配傳統音樂出來表演整點報時。" },
+{ type: "visit", time: "11:00", title: "成田山表參道", mapUrl: "https://maps.app.goo.gl/HTCYtFrUsvj93Pkr6", note: "【特色】全長約800公尺，保留江戶風情門前町街道，兩旁開滿傳統老店、鰻魚飯與伴手禮店。" },
+{ type: "visit", time: "11:45", title: "鰻魚-川豐本店", mapUrl: "https://maps.app.goo.gl/zyDT3vhQw5qh5zNb7", note: "【營業時間】10:00–17:00\n【特色】創立於1910年的百年鰻魚名店，現場職人現剖現烤，搭配祖傳秘製醬汁蒲燒香氣十足。" },
+{ type: "shrine", time: "13:30", title: "成田山新勝寺", mapUrl: "https://maps.app.goo.gl/RCGfUocfVvvqGnEM9", note: "【營業時間】06:00–16:00 (境內全天開放)\n【特色】千年以上歷史的真言宗大本山，主祀不動明王，廣大境內有三重塔與美麗日式公園。" },
+{ type: "shop", time: "15:00", title: "加藤商店 🌠🌠🌠たいやき🌰🌰🌰天津甘栗", mapUrl: "https://maps.app.goo.gl/C2ddMLgB2AqEzFbB9", note: "【特色】表參道人氣點心老店，剛出爐香甜可口的雕魚燒與香氣四溢天津甘栗，散步美食最佳選擇。" },
+{ type: "shop", time: "15:45", title: "成田ゆめ牧場 門前店", mapUrl: "https://maps.app.goo.gl/CFWcFx81VAirPrX7A", note: "【營業時間】09:00–17:00\n【特色】來自夢牧場的直營門市，提供極致濃郁純粹的鮮奶霜淇淋與鮮奶起司蛋糕美味甜點。" },
+{ type: "transport", time: "18:00", title: "前往成田國際機場 Terminal 3", mapUrl: "https://maps.app.goo.gl/nrt3", note: "【搭機指南】\n• 預計 19:30 前抵達 成田機場第三航廈 (NRT T3) 辦理捷星日本航空 GK011 登機與託運。\n• GK011 預計 22:40 起飛，翌日 01:30 抵達台北桃園機場。" }
 ]}
 ],
 flights: [
@@ -422,7 +416,7 @@ sunny: { name: 'sun', class: 'text-orange-500' },
 cloudy: { name: 'cloud', class: 'text-gray-500' }
 };
 const DRIVE_NOTICES = [
-{ title: "右駕左行", text: "日本車輛為右駕，請務必靠左行駛。口訣：「左轉小彎、右轉大彎」論。" },
+{ title: "右駕左行", text: "日本車輛為右駕，請務必靠左行駛。口訣：「左轉小彎、右轉大彎」。" },
 { title: "行人優先", text: "斑馬線若有行人準備過馬路，車輛「絕對必須」完全停止讓行。" },
 { title: "止まれ (Stop)", text: "看到倒三角形的「止まれ」標誌，車輪必須「完全停止」運轉。" },
 { title: "右轉禮讓", text: "右轉（跨越對向車道）時，必須禮讓直行車與左轉車。" }
@@ -537,7 +531,7 @@ if (s.emoji) isEmoji = true; else iconName = s.icon;
 iconColor = s.color; borderColor = s.border;
 } else if (item.type === 'transport') {
 const t = item.title;
-if (t.includes("JX846") || t.includes("JX847")) {
+if (t.includes("JX846") || t.includes("JX847") || t.includes("MM626") || t.includes("GK011")) {
 iconName = 'plane'; iconColor = "text-amber-600"; borderColor = "border-l-amber-600";
 } else if (item.mode === 'car' || t.includes("租車") || t.includes("前往")) {
 iconName = 'car'; iconColor = "text-lime-600"; borderColor = "border-l-lime-600";
