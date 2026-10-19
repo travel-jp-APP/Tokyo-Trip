@@ -226,7 +226,7 @@
     </div>
 
    <script>
-        const DEV_PREVIEW_MODE = true; // 開發預覽模式 ON/OFF
+        const DEV_PREVIEW_MODE = flase; // 開發預覽模式 ON/OFF
 
         let deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -641,7 +641,7 @@
                         <h3 class="font-bold text-stone-800 text-lg leading-tight w-[calc(100%-110px)] sm:w-[calc(100%-150px)] select-text ${isDeleted ? 'line-through decoration-red-500 decoration-2 text-stone-400' : ''}">${item.title}</h3>
                         <div class="flex gap-1.5 shrink-0 items-center"> 
                             ${item.bookingUrl ? `<a href="${item.bookingUrl}" target="_blank" class="p-2 bg-red-50 text-red-600 rounded-full active:scale-95 shrink-0" title="資訊網站">${getIcon('circle-alert', "", 18)}</a>` : ''}
-                            ${item.stampUrl ? `<a href="${item.stampUrl}" target="_blank" class="p-2 bg-rose-50 text-rose-600 rounded-full active:scale-95 shrink-0" title="紀念章網址">${getIcon('stamp', "", 18)}</a>` : ''}
+                            ${item.stampUrl ? `<a href="${item.stampUrl}" target="_blank" class="p-2 bg-rose-50 text-rose-600 rounded-full active:scale-95 shrink-0" title="紀念章網址">${getIcon('circle-alert', "", 18)}</a>` : ''}
                             ${item.weatherUrl ? `<a href="${item.weatherUrl}" target="_blank" class="p-2 bg-sky-50 text-sky-600 rounded-full active:scale-95 shrink-0" title="天氣資訊">${getIcon('cloud-sun', "", 18)}</a>` : ''}
                             ${item.routeUrl ? `<a href="${item.routeUrl}" target="_blank" class="p-2 bg-emerald-50 text-emerald-600 rounded-full active:scale-95 shrink-0" title="路線導航">${getIcon('route', "", 18)}</a>` : ''}
                             <a href="${destinationUrl}" target="_blank" class="p-2 bg-blue-50 text-blue-600 rounded-full active:scale-95 shrink-0" title="地圖導航">${getIcon('navigation', "", 18)}</a>
