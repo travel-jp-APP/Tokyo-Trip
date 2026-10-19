@@ -165,7 +165,7 @@
                     <span class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0">3</span>
                     <p class="leading-snug">點擊「 <span class="font-bold text-stone-900">新增</span> 」，即可從桌面專屬 Icon 開啟！</p>
                 </div>
-                <button id="android-install-btn" onclick="installPwa()" class="hidden w-full mt-2 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm">
+                <button id="android-install-btn" onclick="installPwa()" class="w-full mt-2 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm">
                     <i data-lucide="download" class="w-4 h-4"></i>
                     <span>立即安裝應用程式</span>
                 </button>
@@ -225,13 +225,13 @@
         </div>
     </div>
 
- <script>
+    <script>
          /* ==========================================================================
            【開發 / 測試預覽模式與圖片開關設定】
            - DEV_PREVIEW_MODE = true  (ON)  : 開啟測試預覽模式 (關閉強制加入主畫面選單)
            - DEV_PREVIEW_MODE = false (OFF) : 正式模式 (必須加入手機「主畫面」才能開啟瀏覽)
            ========================================================================== */
-        const DEV_PREVIEW_MODE = true; // 開發預覽模式 ON/OFF
+        const DEV_PREVIEW_MODE = false; // 開發預覽模式 ON/OFF
 
         let deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -252,6 +252,8 @@
                     }
                     deferredPrompt = null;
                 });
+            } else {
+                alert('請點擊 Chrome 右上角選單 (⋮)，然後選擇「加到主畫面」或「安裝應用程式」。');
             }
         }
 
@@ -259,7 +261,7 @@
             const manifestData = {
                 name: "Tokyo Trip 2026",
                 short_name: "Tokyo Trip",
-                start_url: ".",
+                start_url: "./?mode=standalone",
                 display: "standalone",
                 background_color: "#d6d3d1",
                 theme_color: "#d6d3d1",
@@ -267,13 +269,13 @@
                     {
                         src: "Tokyo.jpg",
                         sizes: "512x512",
-                        type: "image/jpeg"
+                        type: "image/jpeg",
+                        purpose: "any maskable"
                     }
                 ]
             };
             const stringified = JSON.stringify(manifestData);
-            const blob = new Blob([stringified], { type: 'manifest+json' });
-            const manifestUrl = URL.createObjectURL(blob);
+            const manifestUrl = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(stringified);
             const linkTag = document.getElementById('pwa-manifest-link');
             if (linkTag) {
                 linkTag.setAttribute('href', manifestUrl);
@@ -314,7 +316,7 @@
                     { type: "visit", time: "19:00", title: "東京鐵塔 (Tokyo Tower)", mapUrl: "https://maps.app.goo.gl/99vrEx7TXZKZFhgYA", stampUrl: "https://cardhunter.jp/facility/dR7PrqG9Y00i4ooXZZ7jrHA4jYlN", note: "【特色】東京經典永恆地標，夜間點燈璀璨浪漫，可登上展望台一覽東京夜景。" }
                 ]},
                 { id: "day3", date: "10/27", dayOfWeek: "二", location: "川越 ➔ 澀谷", weather: "sunny", temp: "21°C", items: [
-                    { type: "shrine", time: "07:30", title: "明治神宮", mapUrl: "https://maps.app.goo.gl/sXqCfJSKbobYd3vZ9" },
+                    { type: "shrine", time: "07:30", title: "明治神宮", mapUrl: "https://maps.app.goo.gl/sXqCfJSKbobYd3vZ9", note: "【特色】東京都心最大的神社綠地，供奉明治天皇與昭憲皇太后，擁有日本最大的木造大鳥居與莊嚴茂密的代代木鎮守之森，祈求結緣與家內安全極為靈驗。" },
                     { type: "shrine", time: "09:00", title: "川越 冰川神社", mapUrl: "https://maps.app.goo.gl/adghHK9tjVYK2xzt8", note: "【特色】求良緣超靈驗的千年以上神社，著名的鯛魚求籤（釣鯛魚籤）與繪馬隧道。" },
                     { type: "shop", time: "10:30", title: "菓子屋橫丁", mapUrl: "https://maps.app.goo.gl/ErFHx2jt3NBAcTTV8", note: "【特色】充滿懷舊古早味菓子與傳統黑糖棒、紫芋點心的小巷，感受日本昭和風情。" },
                     { type: "shop", time: "11:15", title: "ちいかわもぐもぐ本舗 川越店", mapUrl: "https://maps.app.goo.gl/Tg8thBTU2Gncr48h6", note: "【特色】吉伊卡哇（Chiikawa）川越限定主題店，販售豐富傳統和風包裝美食與周邊。" },
@@ -459,7 +461,7 @@
                     title: "臨海線站點",
                     image: "twr.jpg"
                 }
-                    ]
+            ]
         };
 
         const ITEM_STYLES = {
@@ -566,9 +568,15 @@
         };
 
         function checkPwaStatus() {
+            const urlParams = new URLSearchParams(window.location.search);
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+                                 window.matchMedia('(display-mode: fullscreen)').matches ||
+                                 window.matchMedia('(display-mode: minimal-ui)').matches ||
+                                 window.matchMedia('(display-mode: window-controls-overlay)').matches ||
                                  (window.navigator.standalone === true) ||
-                                 document.referrer.includes('android-app://');
+                                 document.referrer.includes('android-app://') ||
+                                 urlParams.get('mode') === 'standalone' ||
+                                 urlParams.has('pwa');
 
             const showApp = DEV_PREVIEW_MODE || isStandalone;
             const pwaScreen = document.getElementById('pwa-prompt-screen');
@@ -1014,10 +1022,12 @@
         window.addEventListener('DOMContentLoaded', () => {
             initManifest();
             if ('serviceWorker' in navigator) {
-                const swCode = `self.addEventListener('fetch', function(event) {});`;
-                const blob = new Blob([swCode], { type: 'text/javascript' });
-                const swUrl = URL.createObjectURL(blob);
-                navigator.serviceWorker.register(swUrl).catch(() => {});
+                try {
+                    const swCode = `self.addEventListener('fetch', function(event) {});`;
+                    const blob = new Blob([swCode], { type: 'text/javascript' });
+                    const swUrl = URL.createObjectURL(blob);
+                    navigator.serviceWorker.register(swUrl).catch(() => {});
+                } catch (e) {}
             }
             initTheme();
             renderDateScroller();
