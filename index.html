@@ -225,8 +225,13 @@
         </div>
     </div>
 
-   <script>
-        const DEV_PREVIEW_MODE = flase; // 開發預覽模式 ON/OFF
+ <script>
+         /* ==========================================================================
+           【開發 / 測試預覽模式與圖片開關設定】
+           - DEV_PREVIEW_MODE = true  (ON)  : 開啟測試預覽模式 (關閉強制加入主畫面選單)
+           - DEV_PREVIEW_MODE = false (OFF) : 正式模式 (必須加入手機「主畫面」才能開啟瀏覽)
+           ========================================================================== */
+        const DEV_PREVIEW_MODE = false; // 開發預覽模式 ON/OFF
 
         let deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', (e) => {
