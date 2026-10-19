@@ -167,7 +167,7 @@
                 </div>
                 <button id="android-install-btn" onclick="installPwa()" class="w-full mt-2 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm">
                     <i data-lucide="download" class="w-4 h-4"></i>
-                    <span>立即安裝應用程式</span>
+                    <span>開啟應用程式</span>
                 </button>
             </div>
 
@@ -212,7 +212,7 @@
             </div>
             
             <div id="date-scroller-container" class="hidden">
-                <div id="date-scroller" class="flex overflow-x-auto gap-3 px-4 pb-3 no-scrollbar snap-x"></div>
+                <div id="date-scroller" class="flex overflow-x-auto gap-1.5 sm:gap-2 px-3 pb-3 no-scrollbar snap-x"></div>
             </div>
         </div>
 
@@ -708,16 +708,24 @@
             scroller.innerHTML = TRIP_DATA.Itinerary.map(day => {
                 const isActive = day.id === state.selectedDayId;
                 return `
-                    <button onclick="selectDay('${day.id}')" class="snap-center shrink-0 flex flex-col items-center justify-center w-16 h-16 rounded-2xl transition-all duration-200 ${
+                    <button id="date-btn-${day.id}" onclick="selectDay('${day.id}')" class="snap-center flex-1 min-w-[46px] shrink-0 flex flex-col items-center justify-center h-14 sm:h-16 rounded-xl sm:rounded-2xl transition-all duration-200 ${
                         isActive 
-                            ? 'bg-indigo-900 text-white font-bold shadow-md scale-105 border-2 border-indigo-900' 
+                            ? 'bg-indigo-900 text-white font-bold shadow-md scale-105 border-2 border-indigo-900 z-10' 
                             : 'bg-white/80 text-stone-600 border border-stone-200/80 hover:bg-stone-100'
                     }">
-                        <span class="text-[10px] uppercase font-semibold opacity-80">${day.date}</span>
-                        <span class="text-lg font-black leading-tight">${day.dayOfWeek}</span>
+                        <span class="text-[10px] sm:text-[11px] uppercase font-bold opacity-80 whitespace-nowrap">${day.date}</span>
+                        <span class="text-sm sm:text-base font-black leading-tight">${day.dayOfWeek}</span>
                     </button>
                 `;
             }).join('');
+
+            // 選取之日期自動滾動置中顯示
+            setTimeout(() => {
+                const activeBtn = document.getElementById(`date-btn-${state.selectedDayId}`);
+                if (activeBtn) {
+                    activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                }
+            }, 50);
         }
 
         function selectDay(dayId) {
@@ -1033,6 +1041,17 @@
             renderDateScroller();
             renderBottomNav();
             checkPwaStatus();
+
+            // 電腦滑鼠橫向滾動支援
+            const dateScrollerEl = document.getElementById('date-scroller');
+            if (dateScrollerEl) {
+                dateScrollerEl.addEventListener('wheel', (evt) => {
+                    if (evt.deltaY !== 0) {
+                        evt.preventDefault();
+                        dateScrollerEl.scrollLeft += evt.deltaY;
+                    }
+                }, { passive: false });
+            }
         });
     </script>
 </body>
