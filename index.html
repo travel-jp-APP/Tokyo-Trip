@@ -231,7 +231,7 @@
            - DEV_PREVIEW_MODE = true  (ON)  : 開啟測試預覽模式 (關閉強制加入主畫面選單)
            - DEV_PREVIEW_MODE = false (OFF) : 正式模式 (必須加入手機「主畫面」才能開啟瀏覽)
            ========================================================================== */
-        const DEV_PREVIEW_MODE = false; // 開發預覽模式 ON/OFF
+        const DEV_PREVIEW_MODE = true; // 開發預覽模式 ON/OFF
 
         let deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -448,6 +448,10 @@
             ],
             notes: [
                 {
+                    title: "2026山手線電車閃卡",
+                    image: "2026山手線電車閃卡.jpg"
+                },
+                {
                     title: "東京地鐵站點標示",
                     image: "tokyometro.jpg"
                 },
@@ -455,7 +459,7 @@
                     title: "臨海線站點",
                     image: "twr.jpg"
                 }
-            ]
+                    ]
         };
 
         const ITEM_STYLES = {
