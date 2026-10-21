@@ -237,10 +237,7 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            const installBtn = document.getElementById('android-install-btn');
-            if (installBtn) {
-                installBtn.classList.remove('hidden');
-            }
+            document.getElementById('android-install-btn')?.classList.remove('hidden');
         });
 
         function installPwa() {
@@ -265,20 +262,11 @@
                 display: "standalone",
                 background_color: "#d6d3d1",
                 theme_color: "#d6d3d1",
-                icons: [
-                    {
-                        src: "Tokyo.jpg",
-                        sizes: "512x512",
-                        type: "image/jpeg",
-                        purpose: "any maskable"
-                    }
-                ]
+                icons: [{ src: "Tokyo.jpg", sizes: "512x512", type: "image/jpeg", purpose: "any maskable" }]
             };
-            const stringified = JSON.stringify(manifestData);
-            const manifestUrl = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(stringified);
             const linkTag = document.getElementById('pwa-manifest-link');
             if (linkTag) {
-                linkTag.setAttribute('href', manifestUrl);
+                linkTag.setAttribute('href', 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifestData)));
             }
         }
 
@@ -348,7 +336,7 @@
                     { type: "shrine", time: "17:30", title: "江島神社", mapUrl: "https://maps.app.goo.gl/uRjSFEdoh2rAiSHZ8", note: "【營業時間】08:30–17:00 (社務所)\n【景點介紹】日本三大弁財天之一，由邊津宮、中津宮、奧津宮組成，祈求金運、藝能與海洋安全。" }
                 ]},
                 { id: "day5", date: "10/29", dayOfWeek: "四", location: "富士山一日遊", weather: "sunny", temp: "16°C", items: [
-                    { type: "transport", time: "08:00", title: "搭乘富士回湧特急 / 高速巴士前往河口湖"},
+                    { type: "transport", time: "08:00", title: "搭乘富士回湧特急 / 高速巴士前往河口湖" },
                     { type: "visit", time: "10:15", title: "新倉山淺間公園 (忠靈塔)", mapUrl: "https://maps.app.goo.gl/PoizfKkHDEgQ1f226", note: "【營業時間】24 小時開放\n【景點介紹】登高遠眺忠靈塔與富士山同框的經典日本絕景。" },
                     { type: "visit", time: "13:00", title: "河口湖大石公園 ", mapUrl: "https://maps.app.goo.gl/k6Wzcu1WBcTfLZur5", note: "【營業時間】24 小時開放\n【景點介紹】湖畔漫步賞富士山景，羅森便利商店拍照熱點打卡。" }
                 ]},
@@ -539,8 +527,8 @@
         };
 
         function getDeletedItems() {
-            try { return JSON.parse(localStorage.getItem('deleted_itinerary_items') || '[]'); }
-            catch (e) { return []; }
+            try { return JSON.parse(localStorage.getItem('deleted_itinerary_items')) || []; }
+            catch { return []; }
         }
 
         function toggleDeleteItem(itemId) {
@@ -552,12 +540,17 @@
             updateView();
         }
 
-        function toggleDarkMode() {
-            const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            updateThemeIcon();
+        function setTheme(isDark) {
+            document.documentElement.classList.toggle('dark', isDark);
             const meta = document.querySelector('meta[name="theme-color"]');
             if (meta) meta.setAttribute('content', isDark ? '#121212' : '#d6d3d1');
+            updateThemeIcon();
+        }
+
+        function toggleDarkMode() {
+            const isDark = !document.documentElement.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            setTheme(isDark);
         }
 
         function updateThemeIcon() {
@@ -573,11 +566,8 @@
 
         function initTheme() {
             const savedTheme = localStorage.getItem('theme');
-            const isDark = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            document.documentElement.classList.toggle('dark', isDark);
-            const meta = document.querySelector('meta[name="theme-color"]');
-            if (meta) meta.setAttribute('content', isDark ? '#121212' : '#d6d3d1');
-            updateThemeIcon();
+            const isDark = savedTheme ? savedTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+            setTheme(isDark);
         }
 
         const getGoogleMapUrl = name => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}`;
@@ -590,21 +580,13 @@
 
         function checkPwaStatus() {
             const urlParams = new URLSearchParams(window.location.search);
-            const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
-                                 window.matchMedia('(display-mode: fullscreen)').matches ||
-                                 window.matchMedia('(display-mode: minimal-ui)').matches ||
-                                 window.matchMedia('(display-mode: window-controls-overlay)').matches ||
-                                 (window.navigator.standalone === true) ||
-                                 document.referrer.includes('android-app://') ||
-                                 urlParams.get('mode') === 'standalone' ||
-                                 urlParams.has('pwa');
+            const isStandalone = ['standalone', 'fullscreen', 'minimal-ui', 'window-controls-overlay'].some(m => window.matchMedia(`(display-mode: ${m})`).matches) ||
+                                 window.navigator.standalone || document.referrer.includes('android-app://') ||
+                                 urlParams.get('mode') === 'standalone' || urlParams.has('pwa');
 
             const showApp = DEV_PREVIEW_MODE || isStandalone;
-            const pwaScreen = document.getElementById('pwa-prompt-screen');
-            const mainAppScreen = document.getElementById('main-app-container');
-
-            if (pwaScreen) pwaScreen.classList.toggle('hidden', showApp);
-            if (mainAppScreen) mainAppScreen.classList.toggle('hidden', !showApp);
+            document.getElementById('pwa-prompt-screen')?.classList.toggle('hidden', showApp);
+            document.getElementById('main-app-container')?.classList.toggle('hidden', !showApp);
 
             if (showApp) updateView();
             lucide.createIcons();
@@ -612,8 +594,9 @@
 
         function switchGuideTab(os) {
             const isIos = os === 'ios';
-            const activeClass = "flex-1 py-2 sm:py-2.5 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 transition-all bg-white text-indigo-950 font-bold shadow-sm";
-            const inactiveClass = "flex-1 py-2 sm:py-2.5 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 transition-all text-stone-500 hover:text-stone-800";
+            const baseClass = "flex-1 py-2 sm:py-2.5 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 transition-all ";
+            const activeClass = baseClass + "bg-white text-indigo-950 font-bold shadow-sm";
+            const inactiveClass = baseClass + "text-stone-500 hover:text-stone-800";
 
             document.getElementById('tab-ios').className = isIos ? activeClass : inactiveClass;
             document.getElementById('tab-android').className = isIos ? inactiveClass : activeClass;
@@ -713,10 +696,7 @@
                         <h2 class="text-xl font-bold text-stone-800">Day ${dayId.replace('day', '')} <span class="ml-2 text-xl font-bold text-stone-800">${currentDayData.location}</span></h2>
                     </div>
                     ${hasItems 
-                        ? currentDayData.items.map((item, index) => {
-                            const itemId = `${dayId}_${index}`;
-                            return renderItineraryItem(item, itemId, deletedSet.has(itemId));
-                          }).join('')
+                        ? currentDayData.items.map((item, index) => renderItineraryItem(item, `${dayId}_${index}`, deletedSet.has(`${dayId}_${index}`))).join('')
                         : '<div class="text-center py-10 text-stone-500 bg-white/50 rounded-xl border border-stone-200">此日期暫無行程資料</div>'
                     }
                     ${FOOTER_HTML}
@@ -743,10 +723,7 @@
 
             // 選取之日期自動滾動置中顯示
             setTimeout(() => {
-                const activeBtn = document.getElementById(`date-btn-${state.selectedDayId}`);
-                if (activeBtn) {
-                    activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-                }
+                document.getElementById(`date-btn-${state.selectedDayId}`)?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
             }, 50);
         }
 
@@ -1027,14 +1004,11 @@
 
         function updateView() {
             const mainContent = document.getElementById('main-content');
-            const dateScrollerContainer = document.getElementById('date-scroller-container');
-            const headerStatus = document.getElementById('header-status');
-
             if (!mainContent) return;
 
             const isItinerary = state.activeTab === 'Itinerary';
-            if (dateScrollerContainer) dateScrollerContainer.classList.toggle('hidden', !isItinerary);
-            if (!isItinerary && headerStatus) headerStatus.classList.add('hidden');
+            document.getElementById('date-scroller-container')?.classList.toggle('hidden', !isItinerary);
+            if (!isItinerary) document.getElementById('header-status')?.classList.add('hidden');
 
             const views = {
                 Itinerary: () => renderItineraryView(state.selectedDayId),
@@ -1054,8 +1028,7 @@
             if ('serviceWorker' in navigator) {
                 try {
                     const swCode = `self.addEventListener('fetch', function(event) {});`;
-                    const blob = new Blob([swCode], { type: 'text/javascript' });
-                    const swUrl = URL.createObjectURL(blob);
+                    const swUrl = URL.createObjectURL(new Blob([swCode], { type: 'text/javascript' }));
                     navigator.serviceWorker.register(swUrl).catch(() => {});
                 } catch (e) {}
             }
